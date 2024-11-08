@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import pygame 
+import pygame
 
 from gale import frames
 from gale import input_handler
@@ -31,12 +31,12 @@ LevelLoader = loaders.TmxLevelLoader
 
 TEXTURES = {
     "tiles": pygame.image.load(BASE_DIR / "assets" / "textures" / "tileset.png"),
-    "martian": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Walk.png"),
+    "Knight_Walk": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Walk.png"),
 }
 
 FRAMES = {
     "tiles": frames.generate_frames(TEXTURES["tiles"], 16, 16),
-    "martian": frames.generate_frames(TEXTURES["martian"], 25, 32),
+    "Knight_Walk": frames.generate_frames(TEXTURES["Knight_Walk"], 25, 32),
 }
 
 TILEMAPS = {

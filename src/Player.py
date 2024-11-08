@@ -12,9 +12,9 @@ class Player(GameEntity):
         super().__init__(
             x,
             y,
-            16,
-            20,
-            "martian",
+            25,
+            32,
+            "Knight_Walk",
             game_level,
             states={
                 "idle": lambda sm: player_states.IdleState(self, sm),
