@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import pygame
+import pygame 
 
 from gale import frames
 from gale import input_handler

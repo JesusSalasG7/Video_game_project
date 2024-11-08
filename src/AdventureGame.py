@@ -1,12 +1,3 @@
-"""
-ISPPV1 2024
-Study Case: Super Martian (Platformer)
-
-Author: Alejandro Mujica
-alejandro.j.mujic4@gmail.com
-
-This file contains the base class SuperMartian as a specialization of gale.Game
-"""
 
 import pygame
 
