@@ -18,7 +18,7 @@ class PlayState(BaseState):
         self.game_level = GameLevel(self.level)
         self.tilemap = self.game_level.tilemap
         self.player = enter_params.get(
-            "player", Player(0, settings.VIRTUAL_HEIGHT - 66, self.game_level)
+            "player", Player(0, settings.VIRTUAL_HEIGHT - 80, self.game_level)
         )
         self.player.change_state("idle")
 
