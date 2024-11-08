@@ -1,8 +1,20 @@
 
+from typing import Dict
+
 from src import mixins
 
 
-class GameObject(mixins.DrawableMixin):
+class GameObject(mixins.DrawableMixin, mixins.CollidableMixin):
+    #Lados de los Objetos
+    TOP = "top"
+    RIGHT = "right"
+    BOTTOM = "bottom"
+    LEFT = "left"
+
+    #Objeto por default
+    DEFAULT_SOLIDNESS = {TOP: False, RIGHT: False, BOTTOM: False, LEFT: False}
+
+
     def __init__(
         self,
         x: float,
@@ -11,6 +23,7 @@ class GameObject(mixins.DrawableMixin):
         height: float,
         texture_id: str,
         frame_index: int,
+        solidness: Dict[str, bool],
     ) -> None:
         self.x = x
         self.y = y
@@ -18,4 +31,11 @@ class GameObject(mixins.DrawableMixin):
         self.height = height
         self.texture_id = texture_id
         self.frame_index = frame_index
+        self.solidness = solidness
         self.flipped = False
+
+    def collides_on(self, another: mixins.CollidableMixin, side: str) -> bool:
+        return self.is_solid_on(side) and self.collides(another)
+    
+    def is_solid_on(self, side: str) -> bool:
+        return self.solidness[side]

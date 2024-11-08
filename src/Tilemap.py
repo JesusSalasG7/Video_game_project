@@ -3,7 +3,9 @@ from typing import List, Tuple
 
 import pygame
 
+from src import mixins
 from src.Tile import Tile
+from src.definitions import tiles
 
 
 class Tilemap:
@@ -22,11 +24,14 @@ class Tilemap:
         layer = [[None for _ in range(self.cols)] for _ in range(self.rows)]
         self.layers.append(layer)
 
-    def set_new_tile(self, i: int, j: int, frame_index: int) -> None:
-        """
-        Set a new tile in the position (i, j) of the current (the last added) layer
-        """
-        self.layers[-1][i][j] = Tile(i, j, self.tilewidth, self.tileheight, frame_index)
+    def set_new_tile(self, i: int, j: int, frame_index: int) -> None:  
+        tile_def = tiles.TILES.get(frame_index)
+        solidness = (
+            tile_def["solidness"] if tile_def is not None else Tile.DEFAULT_SOLIDNESS
+        )
+        self.layers[-1][i][j] = Tile(
+            i, j, self.tilewidth, self.tileheight, frame_index, solidness
+            )
 
     def set_render_boundaries(self, render_rect: pygame.Rect) -> None:
         self.render_rows_range = (
@@ -61,3 +66,22 @@ class Tilemap:
             for i in range(*self.render_rows_range):
                 for j in range(*self.render_cols_range):
                     layer[i][j].render(surface)
+    
+    def collides_tile_on(
+            self, i: int, j: int, another: mixins.CollidableMixin, side: str
+    ) -> bool:
+        if 0 <= i < self.rows and 0 <= j < self.cols:
+            for layer in self.layers:
+                if layer[i][j].collides_on(another ,side):
+                    return True
+        return False
+    
+    def check_solidness_on(
+            self, i: int, j: int, side: str
+    ) -> bool:
+        if 0 <= i < self.rows and 0 <= j < self.cols:
+            for layer in self.layers:
+                if layer[i][j].is_solid_on(side):
+                    return True
+        return False
+    

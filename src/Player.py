@@ -13,16 +13,19 @@ class Player(GameEntity):
             x,
             y,
             25,
-            32,
+            20,
             "Knight_Walk",
             game_level,
             states={
                 "idle": lambda sm: player_states.IdleState(self, sm),
                 "walk": lambda sm: player_states.WalkState(self, sm),
+                "jump": lambda sm: player_states.JumpState(self, sm),
+                "fall": lambda sm: player_states.FallState(self, sm),
             },
             animation_defs={
                 "idle": {"frames": [0]},
-                "walk": {"frames": [9, 10], "interval": 0.15},
+                "walk": {"frames": [1, 10], "interval": 0.15},
+                "jump": {"frames": [6]},
             },
         )
 
