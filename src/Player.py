@@ -25,7 +25,7 @@ class Player(GameEntity):
             animation_defs={
                 "idle": {"frames": [0]},
                 "walk": {"frames": [1, 10], "interval": 0.15},
-                "jump": {"frames": [6]},
+                "jump": {"frames": [9]},
             },
         )
 
