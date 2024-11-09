@@ -6,14 +6,14 @@ from gale.input_handler import InputData
 from src.GameEntity import GameEntity
 from src.states import player_states
 
-
+#texture_id={0: "Knight_Walk", 1: "Knight_Attack"}
 class Player(GameEntity):
     def __init__(self, x: int, y: int, game_level: TypeVar("GameLevel")) -> None:
         super().__init__(
             x,
             y,
             25,
-            20,
+            32,
             "Knight_Walk",
             game_level,
             states={
@@ -28,6 +28,6 @@ class Player(GameEntity):
                 "jump": {"frames": [9]},
             },
         )
-
+    
     def on_input(self, input_id: str, input_data: InputData) -> None:
         self.state_machine.on_input(input_id, input_data)

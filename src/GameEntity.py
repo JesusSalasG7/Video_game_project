@@ -34,9 +34,7 @@ class GameEntity(mixins.DrawableMixin, mixins.AnimatedMixin, mixins.CollidableMi
         self.generate_animations(animation_defs)
         self.flipped = False
 
-    def change_state(
-        self, state_id: str, *args: Tuple[Any], **kwargs: Dict[str, Any]
-    ) -> None:
+    def change_state(self, state_id: str, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> None:
         self.state_machine.change(state_id, *args, **kwargs)
 
     def update(self, dt: float) -> None:

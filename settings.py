@@ -36,11 +36,13 @@ LevelLoader = loaders.TmxLevelLoader
 TEXTURES = {
     "tiles": pygame.image.load(BASE_DIR / "assets" / "textures" / "tileset.png"),
     "Knight_Walk": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Walk.png"),
+    "Knight_Attack": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Attack.png"),
 }
 
 FRAMES = {
     "tiles": frames.generate_frames(TEXTURES["tiles"], 16, 16),
     "Knight_Walk": frames.generate_frames(TEXTURES["Knight_Walk"], 25, 32),
+    "Knight_Attack": frames.generate_frames(TEXTURES["Knight_Attack"], 25, 32),
 }
 
 TILEMAPS = {
