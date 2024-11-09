@@ -39,13 +39,13 @@ class PlayState(BaseState):
         self.tilemap = self.game_level.tilemap
         self.player = enter_params.get("player")
         if self.player is None:
-            self.player = Player(0, settings.VIRTUAL_HEIGHT - 66, self.game_level)
+            self.player = Player(0, 400 - 66, self.game_level)
             self.player.change_state("idle")
 
         self.camera = enter_params.get("camera")
 
         if self.camera is None:
-            self.camera = Camera(0, 0, settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT)
+            self.camera = Camera(0, 192, settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT)
             self.camera.set_collision_boundaries(self.game_level.get_rect())
             self.camera.attach_to(self.player)
 

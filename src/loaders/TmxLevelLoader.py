@@ -77,9 +77,9 @@ class TmxLevelLoader:
                     if value == 0:
                         continue
 
-                    if value == 144:
+                    #if value == 144:
                         #print("hola")
-                        id_texturs = "block"
+                        #id_texturs = "block"
                     
                     frame_index = value - self.first_ids[id_texturs]
 
