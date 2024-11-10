@@ -12,6 +12,7 @@ class WalkState(BaseEntityState):
         if self.entity.flipped:
             self.entity.vx *= -1
         self.entity.change_animation("walk")
+        self.entity.texture_id = "Knight_Walk"
 
     def update(self, dt: float) -> None:
         if not self.entity.check_floor():

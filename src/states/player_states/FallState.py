@@ -8,6 +8,7 @@ from src.states.player_states.BaseEntityState import BaseEntityState
 class FallState(BaseEntityState):
     def enter(self) -> None:
         self.entity.change_animation("jump")
+        self.entity.texture_id = "Knight_Walk"
 
     def update(self, dt: float) -> None:
         self.entity.vy += settings.GRAVITY * dt

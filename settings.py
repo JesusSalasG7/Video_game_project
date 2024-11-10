@@ -13,7 +13,9 @@ input_handler.InputHandler.set_keyboard_action(input_handler.KEY_d, "move_right"
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_LEFT, "move_left")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_a, "move_left")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_SPACE, "jump")
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_x, "attack")
 input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "jump")
+input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_3, "attack")
 
 # Size we want to emulate
 VIRTUAL_WIDTH = 400
@@ -42,7 +44,7 @@ TEXTURES = {
 FRAMES = {
     "tiles": frames.generate_frames(TEXTURES["tiles"], 16, 16),
     "Knight_Walk": frames.generate_frames(TEXTURES["Knight_Walk"], 25, 32),
-    "Knight_Attack": frames.generate_frames(TEXTURES["Knight_Attack"], 25, 32),
+    "Knight_Attack": frames.generate_frames(TEXTURES["Knight_Attack"], 34, 32),
 }
 
 TILEMAPS = {

@@ -1,5 +1,5 @@
 
-from typing import TypeVar, Dict, Any, Tuple
+from typing import TypeVar, Dict, Any, Tuple, List
 
 from gale.state import StateMachine, BaseState
 

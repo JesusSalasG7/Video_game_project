@@ -16,10 +16,9 @@ class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
         self.level = enter_params.get("level", 1)
         self.game_level = GameLevel(self.level)
-        self.tilemap = self.game_level.tilemap
-        #texture_id = {0: "Knight_Attack", 1: "Knight_Walk"} 
+        self.tilemap = self.game_level.tilemap 
         self.player = enter_params.get(
-            "player", Player(0, settings.VIRTUAL_HEIGHT - 80, self.game_level)
+            "player", Player(0, settings.VIRTUAL_HEIGHT - 80, self.game_level, "Knight_Walk")
         )
         self.player.change_state("idle")
 
