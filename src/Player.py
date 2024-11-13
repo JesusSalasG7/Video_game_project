@@ -11,8 +11,8 @@ class Player(GameEntity):
         super().__init__(
             x,
             y,
-            25,
-            32,
+            16,
+            20,
             texture_id,
             game_level,
             states={
@@ -22,11 +22,16 @@ class Player(GameEntity):
                 "fall": lambda sm: player_states.FallState(self, sm),
                 "attack": lambda sm: player_states.AttackState(self, sm), 
             },
+            # animation_defs={
+            #     "idle": {"frames": [0]},
+            #     "walk": {"frames": [1, 10], "interval": 0.15},
+            #     "jump": {"frames": [9]},
+            #     "attack": {"frames": [0, 1], "interval": 0.10},
+            # },
             animation_defs={
                 "idle": {"frames": [0]},
-                "walk": {"frames": [1, 10], "interval": 0.15},
-                "jump": {"frames": [9]},
-                "attack": {"frames": [0, 1], "interval": 0.10},
+                "walk": {"frames": [9, 10], "interval": 0.15},
+                "jump": {"frames": [2]},
             },
         )
     
