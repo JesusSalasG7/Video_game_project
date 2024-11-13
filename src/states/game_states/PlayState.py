@@ -1,12 +1,3 @@
-"""
-ISPPJ1 2024
-Study Case: Super Martian (Platformer)
-
-Author: Alejandro Mujica
-alejandro.j.mujic4@gmail.com
-
-This file contains the class PlayState.
-"""
 
 from typing import Dict, Any
 
@@ -32,14 +23,14 @@ class PlayState(BaseState):
         if self.game_level is None:
             self.game_level = GameLevel(self.level)
             pygame.mixer.music.load(
-                settings.BASE_DIR / "assets" / "sounds" / "music_grassland.ogg"
+                settings.BASE_DIR / "assets" / "sounds" / "musicWorld.ogg"
             )
             pygame.mixer.music.play(loops=-1)
 
         self.tilemap = self.game_level.tilemap
         self.player = enter_params.get("player")
         if self.player is None:
-            self.player = Player(0, 400 - 66, self.game_level)
+            self.player = Player(0, 400 - 82, self.game_level)
             self.player.change_state("idle")
 
         self.camera = enter_params.get("camera")
@@ -49,24 +40,7 @@ class PlayState(BaseState):
             self.camera.set_collision_boundaries(self.game_level.get_rect())
             self.camera.attach_to(self.player)
 
-        self.clock = enter_params.get("clock")
-
-        if self.clock is None:
-            self.clock = Clock(1000)
-
-            def countdown_timer():
-                self.clock.count_down()
-
-                if 0 < self.clock.time <= 5:
-                    settings.SOUNDS["timer"].play()
-
-                if self.clock.time == 0:
-                    self.player.change_state("dead")
-
-            Timer.every(1, countdown_timer)
-        else:
-            Timer.resume()
-
+        
     def update(self, dt: float) -> None:
 
         if self.player.is_dead:
@@ -76,19 +50,6 @@ class PlayState(BaseState):
             self.state_machine.change("game_over", self.player)
 
         self.player.update(dt)
-        
-        # si pasa de nivel
-        if (self.player.score >= settings.POINTS) and not self.win:
-            self.win = True
-
-            for item in self.game_level.items:
-                if item.texture_id == "block":
-                    item.activate_item()
-                    
-            pygame.mixer.music.stop()
-            Timer.pause()
-            settings.SOUNDS["win_level"].play()
-            pygame.mixer.music.play(loops=-1)
 
         if self.player.y >= self.player.tilemap.height:
             self.player.change_state("dead")
@@ -99,15 +60,19 @@ class PlayState(BaseState):
 
         for creature in self.game_level.creatures:
             if self.player.collides(creature):
-                self.player.change_state("dead")
+                print(self.player.current_animation)
+                if self.player.texture_id == "Knight_Attack":
+                    self.game_level.creatures.remove(creature)
+                    settings.SOUNDS["dead"].play()
+                else:   
+                    self.player.change_state("dead")
 
         for item in self.game_level.items:
             if not item.active or not item.collidable:
                 continue
 
             if self.player.collides(item):
-
-                #item.on_collide(self.player)
+                item.on_collide(self.player)
                 item.on_consume(self.player)
 
     def render(self, surface: pygame.Surface) -> None:
@@ -124,17 +89,7 @@ class PlayState(BaseState):
             5,
             (255, 255, 255),
             shadowed=True,
-        )
-
-        render_text(
-            surface,
-            f"Time: {self.clock.time}",
-            settings.FONTS["small"],
-            settings.VIRTUAL_WIDTH - 60,
-            5,
-            (255, 255, 255),
-            shadowed=True,
-        )
+        )  
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "pause" and input_data.pressed:
@@ -144,8 +99,8 @@ class PlayState(BaseState):
                 level=self.level,
                 camera=self.camera,
                 game_level=self.game_level,
-                player=self.player,
-                clock=self.clock,
+                player=self.player,   
             )
         else:
             self.player.on_input(input_id, input_data)
+

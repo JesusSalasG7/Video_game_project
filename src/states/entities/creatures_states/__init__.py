@@ -9,5 +9,6 @@ This module contains all of the creature states.
 """
 
 from src.states.entities.creatures_states.WalkState import WalkState
+from src.states.entities.creatures_states.FlyState import FlyState
 
-(WalkState,)
+(WalkState,FlyState)

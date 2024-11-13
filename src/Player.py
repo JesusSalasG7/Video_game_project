@@ -21,9 +21,9 @@ class Player(GameEntity):
         super().__init__(
             x,
             y,
-            16,
-            20,
-            "martian",
+            25,
+            32,
+            "Knight_Walk",
             game_level,
             states={
                 "idle": lambda sm: player_states.IdleState(self, sm),
@@ -31,11 +31,13 @@ class Player(GameEntity):
                 "jump": lambda sm: player_states.JumpState(self, sm),
                 "fall": lambda sm: player_states.FallState(self, sm),
                 "dead": lambda sm: player_states.DeadState(self, sm),
+                "attack": lambda sm: player_states.AttackState(self, sm),
             },
             animation_defs={
                 "idle": {"frames": [0]},
-                "walk": {"frames": [9, 10], "interval": 0.15},
-                "jump": {"frames": [2]},
+                "walk": {"frames": [1, 10], "interval": 0.15},
+                "jump": {"frames": [9]},
+                "attack": {"frames": [0, 1], "interval": 0.10},
             },
         )
         self.score = 0

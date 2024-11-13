@@ -23,6 +23,7 @@ class GameLevel:
         self.tilemap = None
         self.creatures = []
         self.items = []
+        self.num_level = num_level
         settings.LevelLoader().load(self, settings.TILEMAPS[num_level])
 
     def add_item(self, item_data: Dict[str, Any]) -> None:

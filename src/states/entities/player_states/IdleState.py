@@ -18,6 +18,7 @@ class IdleState(BaseEntityState):
         self.entity.vx = 0
         self.entity.vy = 0
         self.entity.change_animation("idle")
+        self.entity.texture_id = "Knight_Walk"
 
     def update(self, dt: float) -> None:
         if self.entity.handle_tilemap_collision_on_bottom(): # or self.entity.items_collision_on_bottom():
@@ -32,3 +33,5 @@ class IdleState(BaseEntityState):
             self.entity.change_state("walk", "right")
         elif input_id == "jump" and input_data.pressed:
             self.entity.change_state("jump")
+        elif input_id == "attack" and input_data.pressed:
+            self.entity.change_state("attack")    

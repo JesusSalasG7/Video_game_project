@@ -26,7 +26,7 @@ class PauseState(BaseState):
         self.game_level = enter_params["game_level"]
         self.tilemap = self.game_level.tilemap
         self.player = enter_params["player"]
-        self.clock = enter_params["clock"]
+
         pygame.mixer.music.pause()
 
     def exit(self) -> None:
@@ -38,25 +38,6 @@ class PauseState(BaseState):
         self.player.render(world_surface)
         surface.blit(world_surface, (-self.camera.x, -self.camera.y))
 
-        render_text(
-            surface,
-            f"Score: {self.player.score}",
-            settings.FONTS["small"],
-            5,
-            5,
-            (255, 255, 255),
-            shadowed=True,
-        )
-
-        render_text(
-            surface,
-            f"Time: {self.clock.time}",
-            settings.FONTS["small"],
-            settings.VIRTUAL_WIDTH - 60,
-            5,
-            (255, 255, 255),
-            shadowed=True,
-        )
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "pause" and input_data.pressed:
@@ -66,5 +47,4 @@ class PauseState(BaseState):
                 camera=self.camera,
                 game_level=self.game_level,
                 player=self.player,
-                clock=self.clock,
             )

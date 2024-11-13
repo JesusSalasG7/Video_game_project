@@ -1,18 +1,10 @@
-"""
-ISPPJ1 2024
-Study Case: Super Martian (Platformer)
-
-Author: Alejandro Mujica
-alejandro.j.mujic4@gmail.com
-
-This file contains the class TmxLevelLoader.
-"""
 
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
 from src.Tilemap import Tilemap
+import settings 
 
 
 class TmxLevelLoader:
@@ -23,11 +15,14 @@ class TmxLevelLoader:
         self.width = None
         self.tilewidth = None
         self.tileheight = None
+        self.level = None
         self.first_ids = {}
 
     def load(self, level: Any, level_path: Path) -> None:
         tree = ET.parse(f"{level_path}.{self.FILE_EXT}")
         root = tree.getroot()
+        self.level = f"level{level.num_level}"
+        print(self.level)
 
         self.width = int(root.attrib["width"])
         self.height = int(root.attrib["height"])
@@ -44,6 +39,7 @@ class TmxLevelLoader:
 
     def load_tilemap(self, level: Any, group: ET.Element) -> None:
         tilemap = Tilemap(self.height, self.width, self.tilewidth, self.tileheight)
+        id_texturs = None
 
         for layer in group.findall("layer"):
             tilemap.create_layer()
@@ -54,11 +50,12 @@ class TmxLevelLoader:
                 line = [s for s in data[i].split(",") if len(s) > 0]
                 for j in range(self.width):
                     value = int(line[j])
-                    id_texturs = "tiles"
 
-                    if value == 144:
-                        id_texturs = "block"
-  
+                    if self.level in  settings.TILEMAP: 
+                        for rango, textura in settings.TILEMAP[self.level].items():
+                            if rango[0] <= value <= rango[1]:  # Si el valor está dentro del rango
+                                id_texturs = textura 
+
                     frame_index = value - self.first_ids[id_texturs]
                     tilemap.set_new_tile(i, j, frame_index, id_texturs)
 
@@ -73,13 +70,14 @@ class TmxLevelLoader:
                 line = [s for s in data[i].split(",") if len(s) > 0]
                 for j in range(self.width):
                     value = int(line[j])
-                    id_texturs = "tiles"
+                    
                     if value == 0:
                         continue
 
-                    #if value == 144:
-                        #print("hola")
-                        #id_texturs = "block"
+                    if self.level in  settings.TILEMAP: 
+                        for rango, textura in settings.TILEMAP[self.level].items():
+                            if rango[0] <= value <= rango[1]:  # Si el valor está dentro del rango
+                                id_texturs = textura
                     
                     frame_index = value - self.first_ids[id_texturs]
 
@@ -105,7 +103,12 @@ class TmxLevelLoader:
                 if value == 0:
                     continue
 
-                frame_index = value - self.first_ids["creatures"]
+                if self.level in  settings.TILEMAP: 
+                        for rango, textura in settings.TILEMAP[self.level].items():
+                            if rango[0] <= value <= rango[1]:  # Si el valor está dentro del rango
+                                id_texturs = textura
+
+                frame_index = value - self.first_ids[id_texturs]
 
                 level.add_creature(
                     {

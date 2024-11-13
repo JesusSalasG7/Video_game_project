@@ -27,6 +27,10 @@ class Tilemap:
         """
         Set a new tile in the position (i, j) of the current (the last added) layer
         """
+        if frame_index <0:
+            id_textures = "tiles"
+            frame_index = 175
+
         tile_def = tiles.TILES.get(id_textures, {}).get(frame_index)
         solidness = (
             tile_def["solidness"] if tile_def is not None else Tile.DEFAULT_SOLIDNESS
