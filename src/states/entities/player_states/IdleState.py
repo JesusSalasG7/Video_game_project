@@ -1,7 +1,7 @@
 
 from gale.input_handler import InputData
 
-from src.states.player_states.BaseEntityState import BaseEntityState
+from src.states.entities.BaseEntityState import BaseEntityState
 
 
 class IdleState(BaseEntityState):

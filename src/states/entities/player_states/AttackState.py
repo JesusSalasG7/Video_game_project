@@ -1,8 +1,7 @@
 
 from gale.input_handler import InputData
 
-import settings
-from src.states.player_states.BaseEntityState import BaseEntityState
+from src.states.entities.BaseEntityState import BaseEntityState
 
 class AttackState(BaseEntityState):
     def enter(self) -> None:

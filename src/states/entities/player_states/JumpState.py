@@ -2,29 +2,26 @@
 from gale.input_handler import InputData
 
 import settings
-from src.states.player_states.BaseEntityState import BaseEntityState
+from src.states.entities.BaseEntityState import BaseEntityState
 
-
-class FallState(BaseEntityState):
+class JumpState(BaseEntityState):
     def enter(self) -> None:
         self.entity.change_animation("jump")
         #self.entity.texture_id = "Knight_Walk"
         self.entity.texture_id = "martian"
+        self.entity.vy = -settings.GRAVITY / 3
 
     def update(self, dt: float) -> None:
         self.entity.vy += settings.GRAVITY * dt
 
         self.entity.handle_tilemap_collision_on_right() or self.entity.handle_tilemap_collision_on_left()
 
-        if self.entity.handle_tilemap_collision_on_bottom():
+        if self.entity.handle_tilemap_collision_on_top():
             self.entity.vy = 0
-            if self.entity.vx > 0:
-                self.entity.change_state("walk", "right")
-            elif self.entity.vx < 0:
-                self.entity.change_state("walk", "left")
-            else:
-                self.entity.change_state("idle")
 
+        if self.entity.vy >= 0:
+            self.entity.change_state("fall")
+    
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "move_left":
             if input_data.pressed:
