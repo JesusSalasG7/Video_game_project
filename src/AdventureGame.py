@@ -10,8 +10,12 @@ from src.states import game_states
 
 class AdventureGame(Game):
     def init(self) -> None:
-        self.state_machine = StateMachine({"play": game_states.PlayState})
-        self.state_machine.change("play")
+        self.state_machine = StateMachine({
+                "play": game_states.PlayState,
+                "start": game_states.StartState,
+            }
+        )
+        self.state_machine.change("start")
 
     def update(self, dt: float) -> None:
         self.state_machine.update(dt)
