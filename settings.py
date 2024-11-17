@@ -44,7 +44,11 @@ TEXTURES = {
     "Knight_Walk": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Walk.png"),
     "Knight_Attack": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Attack.png"),
     "martian": pygame.image.load(BASE_DIR / "assets" / "textures" / "martian.png"),
-    "background": pygame.image.load(BASE_DIR / "assets" / "textures" / "background.png")
+    "background": pygame.image.load(BASE_DIR / "assets" / "textures" / "background.png"),
+    "Begin": pygame.image.load(BASE_DIR / "assets" / "textures" / "Begin.png"),
+    "End": pygame.image.load(BASE_DIR / "assets" / "textures" / "End.png"),
+    "Dialogo1": pygame.image.load(BASE_DIR / "assets" / "textures" / "Dialogo1.png"),
+    "Dialogo2": pygame.image.load(BASE_DIR / "assets" / "textures" / "Dialogo2.png"),
 }
 
 FRAMES = {

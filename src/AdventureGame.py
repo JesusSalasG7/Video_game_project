@@ -6,25 +6,34 @@ from gale.input_handler import InputData
 from gale.state import StateMachine
 
 from src.states import game_states
-
+from gale.state import StateStack
+from src.states.game_states import ScenaState 
 
 class AdventureGame(Game):
     def init(self) -> None:
-        self.state_machine = StateMachine({
-                "play": game_states.PlayState,
-                "start": game_states.StartState,
-            }
-        )
-        self.state_machine.change("start")
+        self.state_stack = StateStack()
+        # self.state_machine = StateMachine({
+        #         "play": game_states.PlayState,
+        #         "start": game_states.StartState,
+        #     }
+        # )
+        self.state_stack.push(ScenaState(self.state_stack), "End", False)
+        self.state_stack.push(ScenaState(self.state_stack), "Begin", False)
+        self.state_stack.push(game_states.StartState(self.state_stack))
+        #self.state_machine.change("start")
+        
 
     def update(self, dt: float) -> None:
-        self.state_machine.update(dt)
+        #self.state_machine.update(dt)
+        self.state_stack.update(dt)
 
     def render(self, surface: pygame.Surface) -> None:
-        self.state_machine.render(surface)
+        #self.state_machine.render(surface)
+        self.state_stack.render(surface)
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "quit" and input_data.pressed:
             self.quit()
         else:
-            self.state_machine.on_input(input_id, input_data)
+            #self.state_machine.on_input(input_id, input_data)
+            self.state_stack.on_input(input_id, input_data)

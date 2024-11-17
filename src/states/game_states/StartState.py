@@ -3,17 +3,36 @@ import pygame
 
 from gale.input_handler import InputData
 from gale.state import BaseState
-from gale.state import StateMachine
 from gale.text import Text, render_text
 from gale.timer import Timer
 from PIL import Image
+from gale.state import StateStack
+from src.states.game_states.FadeInState import FadeInState
+from src.states.game_states.ScenaState import ScenaState
 
 import settings
 
 class StartState(BaseState):
-    def render(self, surface: pygame.Surface) -> None:
-        ancho_original, alto_original = settings.TEXTURES["background"].get_size()
+    def enter(self) -> None:
+        self.render_text = True
+        self.alpha_transition = 0
+    
         
+        # A surface that supports alpha for the screen
+        self.screen_alpha_surface = pygame.Surface(
+            (settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT), pygame.SRCALPHA
+        )
+
+        # A surface that supports alpha for the title and the menu
+        self.text_alpha_surface = pygame.Surface((300, 58), pygame.SRCALPHA)
+        pygame.draw.rect(
+            self.text_alpha_surface, (255, 255, 255, 128), pygame.Rect(0, 0, 300, 58)
+        )
+
+    def render(self, surface: pygame.Surface) -> None:
+        self.surface = surface
+        ancho_original, alto_original = settings.TEXTURES["background"].get_size()
+
         # Calcular factor de escalado
         factor_ancho = settings.VIRTUAL_WIDTH / ancho_original
         factor_alto = settings.VIRTUAL_HEIGHT / alto_original
@@ -31,18 +50,31 @@ class StartState(BaseState):
         y = (settings.VIRTUAL_HEIGHT - nuevo_alto) // 2
         
         surface.blit(imagen_escalada, (x, y))
-
-        render_text(
-            surface,
-            "Press Enter",
-            settings.FONTS["small"],
-            settings.VIRTUAL_WIDTH // 2,
-            settings.VIRTUAL_HEIGHT // 2 + 40,
-            (197, 195, 198),
-            center=True,
-            shadowed=True,
+        
+        pygame.draw.rect(
+            self.screen_alpha_surface,
+            (255, 255, 255, self.alpha_transition),
+            pygame.Rect(0, 0, settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT),
         )
+        surface.blit(self.screen_alpha_surface, (0, 0))
+
+        if self.render_text:
+            render_text(
+                    surface,
+                    "Presiona ENTER",
+                    settings.FONTS["small"],
+                    settings.VIRTUAL_WIDTH // 2,
+                    settings.VIRTUAL_HEIGHT // 2 + 40,
+                    (197, 195, 198),
+                    center=True,
+                    shadowed=True,
+            )
     
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "enter" and input_data.pressed:
-            self.state_machine("play")
+            self.render_text = False
+            Timer.tween(
+                    1,
+                    [(self, {"alpha_transition": 255})],
+                    on_finish=lambda: self.state_machine.pop()
+                )
