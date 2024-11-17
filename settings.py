@@ -18,18 +18,33 @@ input_handler.InputHandler.set_keyboard_action(input_handler.KEY_LEFT, "move_lef
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_a, "move_left")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_SPACE, "jump")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_x, "attack")
-input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "jump")
-input_handler.InputHandler.set_keyboard_action(input_handler.KEY_f, "f")
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_ESCAPE, "quit")
+input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "click")
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_ESCAPE, "quit")
+input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "click")
+
+
+
+BOARD_WIDTH = 2
+BOARD_HEIGHT = 2
+
+TILE_SIZE = 75
 
 # Size we want to emulate
 VIRTUAL_WIDTH = 400
 VIRTUAL_HEIGHT = 192
+
+BOARD_OFFSET_X = VIRTUAL_WIDTH / 2 - (TILE_SIZE*2)/2
+BOARD_OFFSET_Y = VIRTUAL_HEIGHT / 2 - (TILE_SIZE*2)/2
+
 
 # Size of our actual window
 WINDOW_WIDTH = VIRTUAL_WIDTH * 4
 WINDOW_HEIGHT = VIRTUAL_HEIGHT * 4
 
 PLAYER_SPEED = 80
+
+BOSS_SPEED = 60
 
 GRAVITY = 900
 
@@ -52,7 +67,8 @@ TILEMAP: Dict[str, Dict[int, str] ]= {
         (1,60):"tiles3",
         (61,72): "creatures3",
         (73,144): "creatures",
-        (145,450) :"tiles",
+        (145,320) :"tiles",
+        (321,500) :"dead_Walk",
     }
 }
 
@@ -62,12 +78,14 @@ LevelLoader = loaders.TmxLevelLoader
 
 TEXTURES = {
     "tiles": pygame.image.load(BASE_DIR / "assets" / "textures" / "tileset.png"),
+    "puzzle": pygame.image.load(BASE_DIR / "assets" / "textures" / "imagen.jpg"),
     "tiles2": pygame.image.load(BASE_DIR / "assets" / "textures" / "tileset2.png"),
     "tiles3": pygame.image.load(BASE_DIR / "assets" / "textures" / "tileset3.png"),
     "Knight_Walk": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Walk.png"),
     "Knight_Attack": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Attack.png"),
+    "dead_Walk": pygame.image.load(BASE_DIR / "assets" / "textures" / "dead_Walk.png"),
+    "dead_Attack": pygame.image.load(BASE_DIR / "assets" / "textures" / "dead_Attack.png"),
     "creatures": pygame.image.load(BASE_DIR / "assets" / "textures" / "creatures.png"),
-    "creatures2": pygame.image.load(BASE_DIR / "assets" / "textures" / "ghost-25x35.png"),
     "creatures3": pygame.image.load(BASE_DIR / "assets" / "textures" / "creatures3.png"),
     "hearts": pygame.image.load(BASE_DIR / "assets" / "textures" / "hearts.png"),
     "shot": pygame.image.load(BASE_DIR / "assets" / "textures" / "shot.png"),
@@ -80,12 +98,14 @@ FRAMES = {
     "tiles3": frames.generate_frames(TEXTURES["tiles3"], 16, 16),
     "Knight_Walk": frames.generate_frames(TEXTURES["Knight_Walk"], 16, 17),
     "Knight_Attack": frames.generate_frames(TEXTURES["Knight_Attack"], 25, 17),
+    "dead_Walk": frames.generate_frames(TEXTURES["dead_Walk"], 38, 59),
+    "dead_Attack": frames.generate_frames(TEXTURES["dead_Attack"], 48, 56),
     "dead": frames.generate_frames(TEXTURES["dead"], 32, 23),
     "creatures": frames.generate_frames(TEXTURES["creatures"], 16, 16),
-    "creatures2": frames.generate_frames(TEXTURES["creatures2"], 25, 35),
     "creatures3": frames.generate_frames(TEXTURES["creatures3"], 16, 18),
     "hearts": frames.generate_frames(TEXTURES["hearts"], 10, 9),
     "shot": frames.generate_frames(TEXTURES["shot"],16,16 ),
+    "puzzle": frames.generate_frames(TEXTURES["puzzle"], TILE_SIZE, TILE_SIZE)
 
 }
 
@@ -116,3 +136,6 @@ FONTS = {
     "small": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", 8),
     "medium": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", 16),
 }
+
+
+
