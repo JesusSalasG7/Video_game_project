@@ -1,12 +1,3 @@
-"""
-ISPPJ1 2024
-Study Case: Super Martian (Platformer)
-
-Author: Alejandro Mujica
-alejandro.j.mujic4@gmail.com
-
-This file contains the definition for items.
-"""
 
 from typing import Dict, Any
 
@@ -34,8 +25,6 @@ def key( player: Player):
 
 def door( player: Player):
     open_door(player)
-
-
 
 ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
     "coins": {

@@ -1,12 +1,5 @@
-"""
-ISPPJ1 2024
-Study Case: Super Martian (Platformer)
 
-Author: Alejandro Mujica
-alejandro.j.mujic4@gmail.com
-
-This file contains the base class GameObject.
-"""
+from typing import Dict
 
 from typing import Dict
 
@@ -21,7 +14,6 @@ class GameObject(mixins.DrawableMixin, mixins.CollidableMixin):
     LEFT = "left"
 
     DEFAULT_SOLIDNESS = {TOP: False, RIGHT: False, BOTTOM: False, LEFT: False}
-
     def __init__(
         self,
         x: float,
@@ -46,4 +38,3 @@ class GameObject(mixins.DrawableMixin, mixins.CollidableMixin):
 
     def is_solid_on(self, side: str) -> bool:
         return self.solidness[side]
-    

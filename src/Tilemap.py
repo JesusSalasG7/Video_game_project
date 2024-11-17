@@ -27,7 +27,7 @@ class Tilemap:
         """
         Set a new tile in the position (i, j) of the current (the last added) layer
         """
-        if frame_index <0:
+        if frame_index < 0:
             id_textures = "tiles"
             frame_index = 175
 
@@ -38,7 +38,6 @@ class Tilemap:
         self.layers[-1][i][j] = Tile(
             i, j, self.tilewidth, self.tileheight, frame_index, id_textures, solidness
         )
-
     def set_render_boundaries(self, render_rect: pygame.Rect) -> None:
         self.render_rows_range = (
             max(render_rect.y // self.tileheight, 0),

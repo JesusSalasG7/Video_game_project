@@ -10,7 +10,6 @@ class Boss(GameEntity):
         y: float,
         game_level: TypeVar("GameLevel"),
         texture_id: str,
-        #position_player: float
     ) -> None:
         super().__init__(
             x,
@@ -23,7 +22,6 @@ class Boss(GameEntity):
                 "idle": lambda sm: boss_state.IdleStateBoss(self, sm),
                 "walk": lambda sm: boss_state.WalkStateBoss(self, sm),
                 "attack": lambda sm: boss_state.AttackStateBoss(self, sm),
-            #     "fall": lambda sm: player_states.FallState(self, sm),
             },
             animation_defs={
                 "idle": {"frames": [0]},
@@ -37,4 +35,3 @@ class Boss(GameEntity):
 
     def recovery(self) -> None:
         self.wounded = False
-       

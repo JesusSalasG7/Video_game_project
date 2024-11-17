@@ -1,5 +1,4 @@
 
-
 from typing import Dict, Any
 
 TILES: Dict[str, Dict[int, Dict[str, Any]]] = {

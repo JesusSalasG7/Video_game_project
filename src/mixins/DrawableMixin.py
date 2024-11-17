@@ -1,17 +1,7 @@
-"""
-ISPPJ1 2024
-Study Case: Super Martian (Platformer)
-
-Author: Alejandro Mujica
-alejandro.j.mujic4@gmail.com
-
-This file contains the DrawableMixin.
-"""
 
 import pygame
 
 import settings
-
 
 class DrawableMixin:
     def render(self, surface: pygame.Surface) -> None:

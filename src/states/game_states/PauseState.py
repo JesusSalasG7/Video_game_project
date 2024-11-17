@@ -1,12 +1,3 @@
-"""
-ISPPJ1 2024
-Study Case: Super Martian (Platformer)
-
-Author: Alejandro Mujica
-alejandro.j.mujic4@gmail.com
-
-This file contains the class PauseState.
-"""
 
 from typing import Dict, Any
 

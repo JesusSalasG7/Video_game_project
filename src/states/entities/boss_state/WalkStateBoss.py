@@ -6,6 +6,7 @@ from src.GameObject import GameObject
 from src.states.entities.BaseEntityState import BaseEntityState
 
 class WalkStateBoss(BaseEntityState):
+
     def enter(self, flipped: bool) -> None:
         self.entity.change_animation("walk")
         self.entity.flipped = flipped

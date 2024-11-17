@@ -11,5 +11,10 @@ This module contains all of the mixins for the game.
 from src.mixins.AnimatedMixin import AnimatedMixin
 from src.mixins.CollidableMixin import CollidableMixin
 from src.mixins.DrawableMixin import DrawableMixin
+from src.mixins.CollidableMixin import CollidableMixin
 
+<<<<<<< HEAD
 (AnimatedMixin, CollidableMixin, DrawableMixin)
+=======
+(AnimatedMixin, DrawableMixin, CollidableMixin)
+>>>>>>> History

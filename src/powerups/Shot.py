@@ -53,7 +53,6 @@ class Shot(GameObject):
         image.blit(self.texture, (0, 0),)
 
         surface.blit(image, (self.x, self.y))'''
-            
 
 
 

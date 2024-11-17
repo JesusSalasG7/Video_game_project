@@ -8,14 +8,13 @@ alejandro.j.mujic4@gmail.com
 This file contains the base class GameEntity.
 """
 
-from typing import TypeVar, Dict, Any, Tuple
+from typing import TypeVar, Dict, Any, Tuple, List
 
 from gale.state import StateMachine, BaseState
 
 from src import mixins
 from src.GameObject import GameObject
 from src.GameItem import GameItem
-
 
 class GameEntity(mixins.DrawableMixin, mixins.AnimatedMixin, mixins.CollidableMixin):
     def __init__(
@@ -47,9 +46,7 @@ class GameEntity(mixins.DrawableMixin, mixins.AnimatedMixin, mixins.CollidableMi
         self.flipped = False
         self.is_dead = False
 
-    def change_state(
-        self, state_id: str, *args: Tuple[Any], **kwargs: Dict[str, Any]
-    ) -> None:
+    def change_state(self, state_id: str, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> None:
         self.state_machine.change(state_id, *args, **kwargs)
 
     def update(self, dt: float) -> None:
@@ -139,9 +136,7 @@ class GameEntity(mixins.DrawableMixin, mixins.AnimatedMixin, mixins.CollidableMi
         return False
 
     def check_floor(self) -> bool:
-        """
-        Check whether the entity is on a solid tile.
-        """
+     
         collision_rect = self.get_collision_rect()
 
         # Row for the center of the player
@@ -152,9 +147,6 @@ class GameEntity(mixins.DrawableMixin, mixins.AnimatedMixin, mixins.CollidableMi
         return self.tilemap.check_solidness_on(
             i + 1, left, GameObject.TOP
         ) or self.tilemap.check_solidness_on(i + 1, right, GameObject.TOP)
-    
-
-
 
     def items_collision_on_top(self) -> bool:
         collision_rect = self.get_collision_rect()

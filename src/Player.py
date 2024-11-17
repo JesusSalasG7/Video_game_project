@@ -1,12 +1,3 @@
-"""
-ISPPJ1 2024
-Study Case: Super Martian (Platformer)
-
-Author: Alejandro Mujica
-alejandro.j.mujic4@gmail.com
-
-This file contains the class Player.
-"""
 
 from typing import TypeVar
 
@@ -15,9 +6,8 @@ from gale.input_handler import InputData
 from src.GameEntity import GameEntity
 from src.states.entities import player_states
 
-
 class Player(GameEntity):
-    def __init__(self, x: int, y: int, game_level: TypeVar("GameLevel")) -> None:
+    def __init__(self, x: int, y: int, game_level: TypeVar("GameLevel"), texture_id: str) -> None:
         super().__init__(
             x,
             y,

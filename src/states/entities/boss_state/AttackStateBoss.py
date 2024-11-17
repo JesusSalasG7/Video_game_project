@@ -1,3 +1,4 @@
+
 import pygame
 
 import settings
@@ -52,3 +53,4 @@ class AttackStateBoss(BaseEntityState):
                 self.band = True
 
             return True
+

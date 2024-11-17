@@ -1,18 +1,8 @@
-"""
-ISPPJ1 2024
-Study Case: Super Martian (Platformer)
-
-Author: Alejandro Mujica
-alejandro.j.mujic4@gmail.com
-
-This file contains the class FallState for player.
-"""
 
 from gale.input_handler import InputData
 
 import settings
 from src.states.entities.BaseEntityState import BaseEntityState
-
 
 class FallState(BaseEntityState):
     def enter(self) -> None:
@@ -21,11 +11,9 @@ class FallState(BaseEntityState):
 
     def update(self, dt: float) -> None:
         self.entity.vy += settings.GRAVITY * dt
+        self.entity.handle_tilemap_collision_on_right() or self.entity.handle_tilemap_collision_on_left()
 
-        # If there is a collision on the right, correct x. Else, correct x if there is collision on the left.
-        self.entity.handle_tilemap_collision_on_right() or self.entity.handle_tilemap_collision_on_left() or self.entity.items_collision_on_right() or self.entity.items_collision_on_left()
-
-        if self.entity.handle_tilemap_collision_on_bottom() or self.entity.items_collision_on_bottom():
+        if self.entity.handle_tilemap_collision_on_bottom():
             self.entity.vy = 0
             if self.entity.vx > 0:
                 self.entity.change_state("walk", "right")

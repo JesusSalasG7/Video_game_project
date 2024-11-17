@@ -18,7 +18,6 @@ from src.Boss import Boss
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
-        
         self.level = enter_params.get("level", 2)
         self.game_level = enter_params.get("game_level")
         self.lives = enter_params.get("lives",3)
@@ -72,7 +71,7 @@ class PlayState(BaseState):
 
         if self.player.y >= self.player.tilemap.height:
             self.player.change_state("dead")
-
+        
         self.camera.update()
         self.game_level.set_render_boundaries(self.camera.get_rect())
         self.game_level.update(dt)
@@ -130,7 +129,7 @@ class PlayState(BaseState):
 
 
         if self.level == 2 and self.boss != None:
-            
+        
             if self.move_boss:
                 Timer.after(3,self.walk)
                 Timer.after(10,self.attack)
@@ -180,10 +179,10 @@ class PlayState(BaseState):
         world_surface = pygame.Surface((self.tilemap.width, self.tilemap.height))
         self.game_level.render(world_surface)
         self.player.render(world_surface)
-       
+
         if self.level == 2 and self.boss != None:
             self.boss.render(world_surface)      
-
+        
         surface.blit(world_surface, (-self.camera.x, -self.camera.y))
 
         heart_x = settings.VIRTUAL_WIDTH - 40
@@ -247,4 +246,3 @@ class PlayState(BaseState):
 
     def Move_boss(self) -> None:
         self.move_boss = True  
-

@@ -18,12 +18,7 @@ input_handler.InputHandler.set_keyboard_action(input_handler.KEY_LEFT, "move_lef
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_a, "move_left")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_SPACE, "jump")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_x, "attack")
-input_handler.InputHandler.set_keyboard_action(input_handler.KEY_ESCAPE, "quit")
 input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "click")
-input_handler.InputHandler.set_keyboard_action(input_handler.KEY_ESCAPE, "quit")
-input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "click")
-
-
 
 BOARD_WIDTH = 2
 BOARD_HEIGHT = 2
@@ -49,8 +44,6 @@ BOSS_SPEED = 60
 GRAVITY = 900
 
 NUM_LEVELS = 2
-
-POINTS = 50
 
 TILEMAP: Dict[str, Dict[int, str] ]= {
 
@@ -89,7 +82,8 @@ TEXTURES = {
     "creatures3": pygame.image.load(BASE_DIR / "assets" / "textures" / "creatures3.png"),
     "hearts": pygame.image.load(BASE_DIR / "assets" / "textures" / "hearts.png"),
     "shot": pygame.image.load(BASE_DIR / "assets" / "textures" / "shot.png"),
-    "dead": pygame.image.load(BASE_DIR / "assets" / "textures" / "dead.png"),
+    "Begin": pygame.image.load(BASE_DIR / "assets" / "textures" / "Begin.png"),
+    "End": pygame.image.load(BASE_DIR / "assets" / "textures" / "End.png"),
 }
 
 FRAMES = {
@@ -100,13 +94,11 @@ FRAMES = {
     "Knight_Attack": frames.generate_frames(TEXTURES["Knight_Attack"], 25, 17),
     "dead_Walk": frames.generate_frames(TEXTURES["dead_Walk"], 38, 59),
     "dead_Attack": frames.generate_frames(TEXTURES["dead_Attack"], 48, 56),
-    "dead": frames.generate_frames(TEXTURES["dead"], 32, 23),
     "creatures": frames.generate_frames(TEXTURES["creatures"], 16, 16),
     "creatures3": frames.generate_frames(TEXTURES["creatures3"], 16, 18),
     "hearts": frames.generate_frames(TEXTURES["hearts"], 10, 9),
     "shot": frames.generate_frames(TEXTURES["shot"],16,16 ),
     "puzzle": frames.generate_frames(TEXTURES["puzzle"], TILE_SIZE, TILE_SIZE)
-
 }
 
 TILEMAPS = {
@@ -136,6 +128,3 @@ FONTS = {
     "small": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", 8),
     "medium": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", 16),
 }
-
-
-
