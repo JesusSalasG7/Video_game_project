@@ -11,6 +11,7 @@ class RescueofCeleste(Game):
     def init(self) -> None:
         self.state_machine = StateMachine(
             {
+                "puzzle": game_states.puzzleState,
                 "play": game_states.PlayState,
                 "game_over": game_states.GameOverState,
                 "winer_level": game_states.WinerLevelState,

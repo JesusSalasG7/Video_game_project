@@ -13,5 +13,6 @@ from src.states.game_states.WinerLevelState import WinerLevelState
 from src.states.game_states.PauseState import PauseState
 from src.states.game_states.PlayState import PlayState
 from src.states.game_states.StartState import StartState
+from src.states.game_states.puzzleState import Board
 
-(GameOverState, WinerLevelState, PauseState, PlayState, StartState)
+(GameOverState, WinerLevelState, PauseState, PlayState, StartState,Board)

@@ -28,7 +28,7 @@ class WalkState(BaseEntityState):
             self.entity.change_state("fall")
 
         # If there is a collision on the right, correct x. Else, correct x if there is collision on the left.
-        self.entity.handle_tilemap_collision_on_right() or self.entity.handle_tilemap_collision_on_left() # or self.entity.items_collision_on_right() or self.entity.items_collision_on_left()
+        self.entity.handle_tilemap_collision_on_right() or self.entity.handle_tilemap_collision_on_left() 
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "move_left":

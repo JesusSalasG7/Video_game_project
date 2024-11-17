@@ -41,12 +41,11 @@ class Player(GameEntity):
                 "dead": {"frames": [0, 1, 2, 3, 4, 5, 6, 7], "interval": 0.10},
             },
         )
-        self.score = 0
         self.wounded = False
         self.powerUP = True
         self.pickup_key = False
         self.open_door =False
-        self.coins_counter = {54: 0, 55: 0, 61: 0, 62: 0}
+
 
     def recovery(self) -> None:
         self.wounded = False

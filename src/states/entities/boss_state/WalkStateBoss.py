@@ -1,22 +1,15 @@
-"""
-ISPPJ1 2024
-Study Case: Super Martian (Platformer)
 
-Author: Alejandro Mujica
-alejandro.j.mujic4@gmail.com
+import pygame
 
-This file contains the class SnailWalkState.
-"""
-
+import settings
 from src.GameObject import GameObject
 from src.states.entities.BaseEntityState import BaseEntityState
 
-
-class FlyState(BaseEntityState):
+class WalkStateBoss(BaseEntityState):
     def enter(self, flipped: bool) -> None:
-        self.entity.change_animation("fly")
+        self.entity.change_animation("walk")
         self.entity.flipped = flipped
-        self.entity.vx = -self.entity.walk_speed
+        self.entity.vx = -settings.BOSS_SPEED
         if self.entity.flipped:
             self.entity.vx *= -1
 
@@ -40,4 +33,3 @@ class FlyState(BaseEntityState):
             or self.entity.handle_tilemap_collision_on_right()
         ):
             return True
-

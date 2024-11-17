@@ -35,7 +35,7 @@ class WinerLevelState(BaseState):
 
         render_text(
             surface,
-            "Winer",
+            "Winner",
             settings.FONTS["medium"],
             settings.VIRTUAL_WIDTH // 2,
             20,

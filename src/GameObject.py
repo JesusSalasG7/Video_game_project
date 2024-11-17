@@ -30,7 +30,6 @@ class GameObject(mixins.DrawableMixin, mixins.CollidableMixin):
         height: float,
         texture_id: str,
         frame_index: int,
-        #active: True,
         solidness: Dict[str, bool],
     ) -> None:
         self.x = x
@@ -39,7 +38,6 @@ class GameObject(mixins.DrawableMixin, mixins.CollidableMixin):
         self.height = height
         self.texture_id = texture_id
         self.frame_index = frame_index
-        #self.active = active
         self.solidness = solidness
         self.flipped = False
 
@@ -48,3 +46,4 @@ class GameObject(mixins.DrawableMixin, mixins.CollidableMixin):
 
     def is_solid_on(self, side: str) -> bool:
         return self.solidness[side]
+    

@@ -11,22 +11,18 @@ from gale.timer import Timer
 
 import settings
 from src.Camera import Camera
-from src.Clock import Clock
 from src.GameLevel import GameLevel
 from src.Player import Player
-from src.powerups.Shot import Shot
-from gale.factory import Factory
-import src.powerups
+from src.Boss import Boss
 
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
-        self.level = enter_params.get("level", 1)
-        self.lives = 3
-        self.win = False
+        
+        self.level = enter_params.get("level", 2)
         self.game_level = enter_params.get("game_level")
+        self.lives = enter_params.get("lives",3)
 
-        self.shots = enter_params.get("shots", [])
 
         if self.game_level is None:
             self.game_level = GameLevel(self.level)
@@ -38,7 +34,7 @@ class PlayState(BaseState):
         self.tilemap = self.game_level.tilemap
         self.player = enter_params.get("player")
         if self.player is None:
-            self.player = Player(-0, 400 - 60, self.game_level)
+            self.player = Player(0, 400 - 60, self.game_level)
             self.player.change_state("idle")
 
         self.camera = enter_params.get("camera")
@@ -48,7 +44,22 @@ class PlayState(BaseState):
             self.camera.set_collision_boundaries(self.game_level.get_rect())
             self.camera.attach_to(self.player)
 
-        
+        if self.level == 2:
+            self.boss = enter_params.get("boss")
+            if self.boss is None:
+                self.boss = Boss(1232,  400 - 110, self.game_level, "dead_Walk") 
+                self.boss.change_state("idle")
+
+        self.move_boss = enter_params.get("move_boss",False)
+
+        self.lives_boss = enter_params.get("lives_boss",7)
+
+        self.band = enter_params.get("band",True)        
+
+        self.boss_active = False    
+        Timer.resume()
+
+
     def update(self, dt: float) -> None:
 
         if self.player.is_dead:
@@ -58,9 +69,6 @@ class PlayState(BaseState):
             self.state_machine.change("game_over", self.level)
     
         self.player.update(dt)
-
-        for shot in self.shots:
-            shot.update(dt) 
 
         if self.player.y >= self.player.tilemap.height:
             self.player.change_state("dead")
@@ -75,14 +83,13 @@ class PlayState(BaseState):
                     self.game_level.creatures.remove(creature)
                     settings.SOUNDS["dead"].play()
 
-                elif self.lives == 0: 
-                    self.player.change_state("dead")
-
                 elif not self.player.wounded:
                     settings.SOUNDS["wounded"].play()
                     self.lives-=1    
                     self.player.wounded = True
                     Timer.after(3,self.player.recovery)
+        if self.lives == 0: 
+            self.player.change_state("dead")            
 
         for item in self.game_level.items:
             if not item.active or not item.collidable:
@@ -107,22 +114,79 @@ class PlayState(BaseState):
                     Timer.after(3,self.player.recovery)
 
         if self.player.open_door:
+            Timer.after(1, self.next_level)
 
-            Timer.after(
-                1,
-                self.next_level
+        if (self.player.x > 1024) and (self.player.y > 320) and (self.band == True) and (self.level == 2):
+            self.move_boss = True    
+            self.band  = False
+            self.boss_active = True 
+            pygame.mixer.music.stop()
+            pygame.mixer.music.unload()
+
+            pygame.mixer.music.load(
+                settings.BASE_DIR / "assets" / "sounds" / "Boss_Battle.wav"
             )
+            pygame.mixer.music.play(loops=-1)
+
+
+        if self.level == 2 and self.boss != None:
             
+            if self.move_boss:
+                Timer.after(3,self.walk)
+                Timer.after(10,self.attack)
+                Timer.after(14,self.idle)
+                Timer.after(17,self.attack)
+                Timer.after(21,self.idle)
+                Timer.after(23,self.Move_boss)
+                self.move_boss = False
 
+            self.boss.update(dt)
 
+            if self.player.collides(self.boss):
+                
+                if self.player.texture_id == "Knight_Attack" and self.boss.texture_id == "dead_Walk":
+                    
+                    if not self.boss.wounded:
+                            settings.SOUNDS["dead"].play()
+                            self.lives_boss -= 1    
+                            self.boss.wounded = True
+                            Timer.after(1,self.boss.recovery)
+
+                    if self.boss.vx !=0:
+                        if not self.player.wounded:
+                            settings.SOUNDS["wounded"].play()
+                            self.lives -= 1    
+                            self.player.wounded = True
+                            Timer.after(3,self.player.recovery)
+                elif  self.player.texture_id != "Knight_Attack":
+
+                    if self.boss.vx !=0:
+                        if not self.player.wounded:
+                            settings.SOUNDS["wounded"].play()
+                            self.lives -= 1    
+                            self.player.wounded = True
+                            Timer.after(3,self.player.recovery)
+
+                if self.lives_boss == 0:
+                    Timer.clear()
+                    self.boss = None            
+  
+        if self.lives == 0: 
+                self.player.change_state("dead")       
+
+            
     def render(self, surface: pygame.Surface) -> None:
+        
         world_surface = pygame.Surface((self.tilemap.width, self.tilemap.height))
         self.game_level.render(world_surface)
         self.player.render(world_surface)
+       
+        if self.level == 2 and self.boss != None:
+            self.boss.render(world_surface)      
+
         surface.blit(world_surface, (-self.camera.x, -self.camera.y))
 
         heart_x = settings.VIRTUAL_WIDTH - 40
-
         i = 0
         # Draw filled hearts
         while i < self.lives:
@@ -132,59 +196,55 @@ class PlayState(BaseState):
             heart_x += 11
             i += 1
 
-        render_text(
-            surface,
-            f"Score: {self.player.score}",
-            settings.FONTS["small"],
-            5,
-            5,
-            (255, 255, 255),
-            shadowed=True,
-        )  
-
-        for shot in self.shots:
-            shot.render(surface)    
-
-
+    
     def next_level(self) -> None:   
         pygame.mixer.music.stop()
         pygame.mixer.music.unload()
         Timer.clear()
-        self.state_machine.change(
-                    "winer_level",
-                    level= self.level + 1,
-                    )                
+        self.state_machine.change("winer_level", level = self.level + 1)                
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "pause" and input_data.pressed:
-            Timer.pause()
-            self.state_machine.change(
-                "pause",
-                level=self.level,
-                camera=self.camera,
-                game_level=self.game_level,
-                player=self.player,   
-            )
-        elif input_id == "f" and input_data.pressed:
-            if self.player.powerUP:
-                        self.shot_factory = Factory(Shot)
-                        print(self.player.x, self.player.y)
-                        
-                        collision_rect = self.player.get_collision_rect()
-                        
-                        x = self.tilemap.to_x(collision_rect.centery)
-                        y = self.tilemap.to_y(collision_rect.left)
-                        print(x, y)
+        
+            if self.level == 1:
+                Timer.pause()
+                self.state_machine.change(
+                    "pause",
+                    level=self.level,
+                    camera=self.camera,
+                    game_level=self.game_level,
+                    player=self.player,   
+                    lives=self.lives,
+                )
+            elif self.level == 2:
+                if self.boss_active == False:
+                    Timer.pause()
+                    self.state_machine.change(
+                        "pause",
+                        level=self.level,
+                        camera=self.camera,
+                        game_level=self.game_level,
+                        player=self.player,   
+                        boss=self.boss,
+                        move_boss=self.move_boss,
+                        band=self.band,
+                        lives_boss=self.lives_boss,
+                        lives=self.lives,
+                    )
 
-                        x = self.tilemap.to_i(collision_rect.centery)
-                        y = self.tilemap.to_j(collision_rect.left)
-                        print(x, y)
-                        #x= x*16
-                        #y= y*16
-
-
-                        a = self.shot_factory.create(self.player.x  / settings.WINDOW_HEIGHT  , self.player.y / settings.WINDOW_WIDTH)
-                        self.shots.append(a) 
         else:
             self.player.on_input(input_id, input_data)
+
+
+    def idle(self) -> None:
+        self.boss.change_state("idle")  
+
+    def walk(self) -> None:
+        self.boss.change_state("walk",False)       
+
+    def attack(self) -> None:
+        self.boss.change_state("attack",False)  
+
+    def Move_boss(self) -> None:
+        self.move_boss = True  
 
