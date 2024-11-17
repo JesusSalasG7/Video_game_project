@@ -84,6 +84,8 @@ TEXTURES = {
     "shot": pygame.image.load(BASE_DIR / "assets" / "textures" / "shot.png"),
     "Begin": pygame.image.load(BASE_DIR / "assets" / "textures" / "Begin.png"),
     "End": pygame.image.load(BASE_DIR / "assets" / "textures" / "End.png"),
+    "background": pygame.image.load(BASE_DIR / "assets" / "textures" / "End.png"),
+    "dead": pygame.image.load(BASE_DIR / "assets" / "textures" / "dead.png"),
 }
 
 FRAMES = {
@@ -98,7 +100,8 @@ FRAMES = {
     "creatures3": frames.generate_frames(TEXTURES["creatures3"], 16, 18),
     "hearts": frames.generate_frames(TEXTURES["hearts"], 10, 9),
     "shot": frames.generate_frames(TEXTURES["shot"],16,16 ),
-    "puzzle": frames.generate_frames(TEXTURES["puzzle"], TILE_SIZE, TILE_SIZE)
+    "puzzle": frames.generate_frames(TEXTURES["puzzle"], TILE_SIZE, TILE_SIZE),
+    "dead": frames.generate_frames(TEXTURES["dead"], 32, 23),
 }
 
 TILEMAPS = {

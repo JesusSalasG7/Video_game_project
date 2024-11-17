@@ -10,8 +10,6 @@ from gale.state import BaseState
 from gale.text import Text, render_text
 from gale.timer import Timer
 from PIL import Image
-from gale.state import StateStack
-from src.states.game_states.FadeInState import FadeInState
 from src.states.game_states.ScenaState import ScenaState
 
 import settings

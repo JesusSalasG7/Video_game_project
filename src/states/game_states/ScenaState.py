@@ -12,14 +12,13 @@ from gale.state import StateStack
 from gale.text import Text, render_text
 
 class ScenaState(BaseState):
-    def enter(self, text: str, dialogue: bool) -> None:
+    def enter(self, text: str) -> None:
         self.dialogo = "Caballero, nuestro reino esta envuelto en sombras.\nLa malvada criatura ha secuestrado a la\nprincesa, nuestra esperanza y guia. \nSolo tu puedes enfrentarte a esta oscuridad y devolver la paz.\n Ve ahora, rescata a nuestra amada princesa\n y devuelve la esperanza a nuestro pueblo"
         self.linea = self.dialogo.split("\n")
         self.index = 0
         self.parrafo = len(self.linea)
         self.alpha_transition = 0
         self.text = text
-        self.dialogue = dialogue
         # A surface that supports alpha for the screen
         self.screen_alpha_surface = pygame.Surface(
             (settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT), pygame.SRCALPHA
@@ -44,22 +43,12 @@ class ScenaState(BaseState):
         nuevo_ancho = int(ancho_original * factor_escalado)
         nuevo_alto = int(alto_original * factor_escalado)
 
-        if self.dialogue:
-            # Calcular factor de escalado reducido
-            factor_escalado = 1  # Reduce la imagen al 50% de su tamaño original (puedes ajustar este valor)
-    
-            # Calcular el nuevo tamaño escalado
-            nuevo_ancho = int(ancho_original * factor_escalado)
-            nuevo_alto = int(alto_original * factor_escalado)
-            y = (settings.VIRTUAL_HEIGHT - nuevo_alto) - 20
-        else:
-            y = (settings.VIRTUAL_HEIGHT - nuevo_alto) // 2
-
         # Escalar la imagen usando smoothscale
         imagen_escalada = pygame.transform.smoothscale(settings.TEXTURES[self.text], (nuevo_ancho, nuevo_alto))
         
         # Calcular las coordenadas para centrar la imagen
         x = (settings.VIRTUAL_WIDTH - nuevo_ancho) // 2
+        y = (settings.VIRTUAL_HEIGHT - nuevo_alto) // 2
 
         surface.fill((0, 0, 0))
         surface.blit(imagen_escalada, (x, y))

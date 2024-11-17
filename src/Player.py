@@ -7,7 +7,7 @@ from src.GameEntity import GameEntity
 from src.states.entities import player_states
 
 class Player(GameEntity):
-    def __init__(self, x: int, y: int, game_level: TypeVar("GameLevel"), texture_id: str) -> None:
+    def __init__(self, x: int, y: int, game_level: TypeVar("GameLevel")) -> None:
         super().__init__(
             x,
             y,
