@@ -10,6 +10,7 @@ from gale.timer import Timer
 
 from gale.state import StateStack
 from gale.text import Text, render_text
+from src.states import game_states
 
 class ScenaState(BaseState):
     def enter(self, text: str) -> None:
@@ -29,6 +30,7 @@ class ScenaState(BaseState):
         pygame.draw.rect(
             self.text_alpha_surface, (255, 255, 255, 128), pygame.Rect(0, 0, 300, 58)
         )
+        self.active = True
 
     def render(self, surface: pygame.Surface) -> None:
         self.surface = surface
@@ -72,14 +74,20 @@ class ScenaState(BaseState):
         surface.blit(self.screen_alpha_surface, (0, 0))
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
-        if input_id == "enter" and input_data.pressed:
+
+        def finish_dialogs():
+             self.state_machine.pop()
+             self.state_machine.push(game_states.PlayState(self.state_machine))
+
+        if input_id == "enter" and input_data.pressed and self.active:
                 if self.index < self.parrafo - 1:
-                     self.index += 1
+                    self.index += 1
                 else:
+                    self.active = False
                     self.index = 0
                     Timer.tween(
                         1,
                         [(self, {"alpha_transition": 255})],
-                        on_finish=lambda: self.state_machine.pop()
+                        on_finish=finish_dialogs
                     )
 

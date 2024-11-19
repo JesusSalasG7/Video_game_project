@@ -14,11 +14,11 @@ from src.Camera import Camera
 from src.GameLevel import GameLevel
 from src.Player import Player
 from src.Boss import Boss
-
+from src.states import game_states
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
-        self.level = enter_params.get("level", 2)
+        self.level = enter_params.get("level", 1)
         self.game_level = enter_params.get("game_level")
         self.lives = enter_params.get("lives",3)
 
@@ -65,12 +65,14 @@ class PlayState(BaseState):
             pygame.mixer.music.stop()
             pygame.mixer.music.unload()
             Timer.clear()
-            self.state_machine.change("game_over", self.level)
+            self.state_machine.pop()
+            self.state_machine.push(game_states.GameOverState(self.state_machine), self.level)
     
         self.player.update(dt)
 
         if self.player.y >= self.player.tilemap.height:
-            self.player.change_state("dead")
+            self.player.is_dead = True
+            return
         
         self.camera.update()
         self.game_level.set_render_boundaries(self.camera.get_rect())

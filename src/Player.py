@@ -28,13 +28,18 @@ class Player(GameEntity):
                 "walk": {"frames": [0, 2, 4, 6], "interval": 0.15},
                 "jump": {"frames": [2]},
                 "attack": {"frames": [0, 1], "interval": 0.10},
-                "dead": {"frames": [0, 1, 2, 3, 4, 5, 6, 7], "interval": 0.10},
+                "dead": {"frames": [0, 1, 2, 3, 4, 5, 6, 7], "interval": 0.10, "loops": 0},
             },
         )
         self.wounded = False
         self.powerUP = True
         self.pickup_key = False
         self.open_door =False
+
+        def set_dead():
+            self.is_dead = True
+
+        self.animations["dead"].on_finish = set_dead
 
 
     def recovery(self) -> None:

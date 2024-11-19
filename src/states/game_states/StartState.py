@@ -10,7 +10,7 @@ from gale.state import BaseState
 from gale.text import Text, render_text
 from gale.timer import Timer
 from PIL import Image
-from src.states.game_states.ScenaState import ScenaState
+from src.states import game_states
 
 import settings
 
@@ -18,7 +18,6 @@ class StartState(BaseState):
     def enter(self) -> None:
         self.render_text = True
         self.alpha_transition = 0
-    
         
         # A surface that supports alpha for the screen
         self.screen_alpha_surface = pygame.Surface(
@@ -30,6 +29,7 @@ class StartState(BaseState):
         pygame.draw.rect(
             self.text_alpha_surface, (255, 255, 255, 128), pygame.Rect(0, 0, 300, 58)
         )
+        self.active = True
 
     def render(self, surface: pygame.Surface) -> None:
         self.surface = surface
@@ -70,10 +70,11 @@ class StartState(BaseState):
                     (197, 195, 198),
                     center=True,
                     shadowed=True,
-            )
-    
+            )    
+
     def on_input(self, input_id: str, input_data: InputData) -> None:
-        if input_id == "enter" and input_data.pressed:
+        if input_id == "enter" and input_data.pressed and self.active:
+            self.active = False
             self.render_text = False
             Timer.tween(
                     1,

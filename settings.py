@@ -84,7 +84,7 @@ TEXTURES = {
     "shot": pygame.image.load(BASE_DIR / "assets" / "textures" / "shot.png"),
     "Begin": pygame.image.load(BASE_DIR / "assets" / "textures" / "Begin.png"),
     "End": pygame.image.load(BASE_DIR / "assets" / "textures" / "End.png"),
-    "background": pygame.image.load(BASE_DIR / "assets" / "textures" / "End.png"),
+    "background": pygame.image.load(BASE_DIR / "assets" / "textures" / "background.png"),
     "dead": pygame.image.load(BASE_DIR / "assets" / "textures" / "dead.png"),
 }
 

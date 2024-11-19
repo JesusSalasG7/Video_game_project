@@ -6,7 +6,7 @@ from gale.state import BaseState
 from gale.text import render_text
 
 from gale.animation import Animation
-
+from src.states import game_states
 
 
 import settings
@@ -22,9 +22,13 @@ class GameOverState(BaseState):
                 0.13,  # Given interval or zero
                 0,
             )
+        def set_active():
+            self.active = True
+        algo.on_finish = set_active
         self.animation["dead"] = algo
         self.current_animation = None
         self.frame_index = -1
+        self.active = False
         self.change_animation("dead")
 
     def update(self, dt: float) -> None:
@@ -34,9 +38,10 @@ class GameOverState(BaseState):
             self.frame_index = self.current_animation.get_current_frame()    
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
-        if input_id == "enter" and input_data.pressed:
+        if input_id == "enter" and input_data.pressed and self.active:
             settings.SOUNDS["gameover"].stop()
-            self.state_machine.change("play", level = self.level)
+            self.state_machine.pop()
+            self.state_machine.push(game_states.PlayState(self.state_machine), level = self.level)
 
     def render(self, surface: pygame.Surface) -> None:
 
