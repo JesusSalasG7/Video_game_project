@@ -19,7 +19,6 @@ class WinerLevelState(BaseState):
             settings.SOUNDS["win_level"].stop()
             self.state_machine.pop()
             self.state_machine.push(game_states.PlayState(self.state_machine), level=self.level)
-            #self.state_machine.change("play", level=self.level)
 
     def render(self, surface: pygame.Surface) -> None:
 

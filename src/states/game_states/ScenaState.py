@@ -14,7 +14,13 @@ from src.states import game_states
 
 class ScenaState(BaseState):
     def enter(self, text: str) -> None:
-        self.dialogo = ["Caballero, nuestro reino esta envuelto en sombras.\nLa malvada criatura ha secuestrado a la\nprincesa, nuestra esperanza y guia.\nSolo tu puedes enfrentarte a esta oscuridad y devolver la paz.\nVe ahora, rescata a nuestra amada princesa\ny devuelve la esperanza a nuestro pueblo.","Majestad,\nno hay sombra que pueda detener el brillo del honor\nni criatura que desafie mi espada\nsin encontrar justicia.\nJuro por mi vida\ny mi lealtad al reino\nque la princesa sera rescatada,\ny este mal sera erradicado.\nQue el pueblo mantenga la fe,\npues regresare\ncon la esperanza\nque tanto anhelan."]
+        if text == "Begin":
+            self.dialogo = ["Caballero, nuestro reino esta envuelto en sombras.\nLa malvada criatura ha secuestrado a la\nprincesa, nuestra esperanza y guia.\nSolo tu puedes enfrentarte a esta oscuridad y devolver la paz.\nVe ahora, rescata a nuestra amada princesa\ny devuelve la esperanza a nuestro pueblo.","Majestad,\nno hay sombra que pueda detener el brillo del honor\nni criatura que desafie mi espada\nsin encontrar justicia.\nJuro por mi vida\ny mi lealtad al reino\nque la princesa sera rescatada,\ny este mal sera erradicado.\nQue el pueblo mantenga la fe,\npues regresare\ncon la esperanza\nque tanto anhelan."]
+            self.charaters = ["Rey","Caballero"]
+        else:
+            self.dialogo = ["Gracias, amigo. Sabía que vendrías.\n Siempre supe que tenías la fuerza para llegar hasta aquí.\nLo que no sabes es que fui yo quien liberó al dragón.\n Él es el guardián de un poder antiguo, y yo necesitaba su fuerza. \nEl reino no está en peligro...\n El reino necesita este caos para renacer.\nTú, valiente caballero, \neres la pieza que faltaba para completar el ciclo. \nAhora que has derrotado al dragón, \nsolo yo puedo usar su poder para moldear el futuro del reino.\n Y tú... serás parte de ese futuro.\nSí, todas mienten. El rey, tú, incluso el dragón... \ntodos han jugado su parte en esta historia.\n Pero al final, sólo uno puede escribir el destino. \nY ese soy yo.","¿Amigo? Crei que... ¿No estás aquí en contra de tu voluntad?\n¿Qué... qué estás diciendo? ¿Era todo una trampa?\n¡No lo puedo creer! ¡Todo ha sido una mentira!\n ¿Nos han usado a todos?\n ¡El rey, el pueblo y yo"]
+            self.charaters = ["Princesa","Caballero"]
+        self.charaters_index = 0
         self.linea1 = self.dialogo[0].split("\n")
         self.linea2 = self.dialogo[1].split("\n")
         self.talk = [self.linea1,self.linea2]
@@ -62,11 +68,22 @@ class ScenaState(BaseState):
         
         if self.active:
             render_text(
+                surface,
+                self.charaters[self.charaters_index],
+                settings.FONTS["small"],
+                settings.VIRTUAL_WIDTH // 2 - 50,
+                settings.VIRTUAL_HEIGHT // 2 + 40,
+                (231, 166, 45),
+                center=True,
+                shadowed=True,
+            )
+
+            render_text(
                     surface,
                     self.talk[self.lineas][self.index],
                     settings.FONTS["small"],
                     settings.VIRTUAL_WIDTH // 2,
-                    settings.VIRTUAL_HEIGHT // 2 + 40,
+                    settings.VIRTUAL_HEIGHT // 2 + 50,
                     (197, 195, 198),
                     center=True,
                     shadowed=True,
@@ -93,10 +110,12 @@ class ScenaState(BaseState):
                     self.index1 += 1
                     self.parrafor_total -= 1
                     self.lineas += 1
+                    self.charaters_index += 1
                 else:
                     self.index = 0
                     self.lineas = 0
                     self.index1 += 1
+                    self.charaters_index = 0
                     self.active = False
                     Timer.tween(
                         1,

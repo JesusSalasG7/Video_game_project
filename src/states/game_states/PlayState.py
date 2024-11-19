@@ -18,7 +18,7 @@ from src.states import game_states
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
-        self.level = enter_params.get("level", 1)
+        self.level = enter_params.get("level", 2)
         self.game_level = enter_params.get("game_level")
         self.lives = enter_params.get("lives",3)
 
@@ -143,6 +143,12 @@ class PlayState(BaseState):
 
             self.boss.update(dt)
 
+            def to_win():
+                #self.boss.recovery
+                self.state_machine.pop()
+                self.state_machine.push(game_states.ScenaState(self.state_machine), "End")
+                self.state_machine.push(game_states.StartState(self.state_machine))
+
             if self.player.collides(self.boss):
                 
                 if self.player.texture_id == "Knight_Attack" and self.boss.texture_id == "dead_Walk":
@@ -151,8 +157,12 @@ class PlayState(BaseState):
                             settings.SOUNDS["dead"].play()
                             self.lives_boss -= 1    
                             self.boss.wounded = True
-                            Timer.after(1,self.boss.recovery)
-
+                            pygame.time.wait(5000)
+                            self.level = 1
+                            self.state_machine.pop()
+                            self.state_machine.push(game_states.StartState(self.state_machine))
+                            self.state_machine.push(game_states.ScenaState(self.state_machine), "End")
+                            
                     if self.boss.vx !=0:
                         if not self.player.wounded:
                             settings.SOUNDS["wounded"].play()
@@ -174,7 +184,6 @@ class PlayState(BaseState):
   
         if self.lives == 0: 
                 self.player.change_state("dead")       
-
             
     def render(self, surface: pygame.Surface) -> None:
         
@@ -203,8 +212,7 @@ class PlayState(BaseState):
         pygame.mixer.music.unload()
         Timer.clear()
         self.state_machine.pop()
-        self.state_machine.push(game_states.WinerLevelState(self.state_machine), level = self.level + 1)
-        #self.state_machine.change("winer_level", level = self.level + 1)                
+        self.state_machine.push(game_states.WinerLevelState(self.state_machine), level = self.level + 1)             
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "pause" and input_data.pressed:
