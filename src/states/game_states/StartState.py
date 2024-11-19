@@ -51,6 +51,7 @@ class StartState(BaseState):
         x = (settings.VIRTUAL_WIDTH - nuevo_ancho) // 2
         y = (settings.VIRTUAL_HEIGHT - nuevo_alto) // 2
         
+        surface.fill((0, 0, 0))
         surface.blit(imagen_escalada, (x, y))
         
         pygame.draw.rect(
@@ -64,7 +65,7 @@ class StartState(BaseState):
             render_text(
                     surface,
                     "Presiona ENTER",
-                    settings.FONTS["small"],
+                    settings.FONTS["medium"],
                     settings.VIRTUAL_WIDTH // 2,
                     settings.VIRTUAL_HEIGHT // 2 + 40,
                     (197, 195, 198),

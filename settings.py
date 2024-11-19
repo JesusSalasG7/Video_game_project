@@ -128,6 +128,6 @@ SOUNDS["pickup_coin"].set_volume(0.5)
 pygame.font.init()
 
 FONTS = {
-    "small": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", 8),
+    "small": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", 7),
     "medium": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", 16),
 }

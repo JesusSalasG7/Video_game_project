@@ -5,6 +5,8 @@ from gale.input_handler import InputData
 from gale.state import BaseState
 from gale.text import render_text
 
+from src.states import game_states
+
 import settings
 
 class WinerLevelState(BaseState):
@@ -15,7 +17,9 @@ class WinerLevelState(BaseState):
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "enter" and input_data.pressed:
             settings.SOUNDS["win_level"].stop()
-            self.state_machine.change("play", level=self.level)
+            self.state_machine.pop()
+            self.state_machine.push(game_states.PlayState(self.state_machine), level=self.level)
+            #self.state_machine.change("play", level=self.level)
 
     def render(self, surface: pygame.Surface) -> None:
 

@@ -202,7 +202,9 @@ class PlayState(BaseState):
         pygame.mixer.music.stop()
         pygame.mixer.music.unload()
         Timer.clear()
-        self.state_machine.change("winer_level", level = self.level + 1)                
+        self.state_machine.pop()
+        self.state_machine.push(game_states.WinerLevelState(self.state_machine), level = self.level + 1)
+        #self.state_machine.change("winer_level", level = self.level + 1)                
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "pause" and input_data.pressed:
