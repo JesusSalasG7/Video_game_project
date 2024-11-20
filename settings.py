@@ -8,6 +8,11 @@ from typing import Dict
 
 from src import loaders
 
+from gale.frames import generate_frames
+
+input_handler.InputHandler.set_keyboard_action(input_handler.KEY_ESCAPE, "quit")
+input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "click")
+
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_ESCAPE, "quit")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_p, "pause")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_RETURN, "enter")
@@ -31,7 +36,6 @@ VIRTUAL_HEIGHT = 192
 
 BOARD_OFFSET_X = VIRTUAL_WIDTH / 2 - (TILE_SIZE*2)/2
 BOARD_OFFSET_Y = VIRTUAL_HEIGHT / 2 - (TILE_SIZE*2)/2
-
 
 # Size of our actual window
 WINDOW_WIDTH = VIRTUAL_WIDTH * 4
@@ -86,6 +90,7 @@ TEXTURES = {
     "End": pygame.image.load(BASE_DIR / "assets" / "textures" / "End.png"),
     "background": pygame.image.load(BASE_DIR / "assets" / "textures" / "background.png"),
     "dead": pygame.image.load(BASE_DIR / "assets" / "textures" / "dead.png"),
+    "Puzzle": pygame.image.load(BASE_DIR / "assets" / "textures" / "Puzzle.jpg")
 }
 
 FRAMES = {
@@ -100,7 +105,7 @@ FRAMES = {
     "creatures3": frames.generate_frames(TEXTURES["creatures3"], 16, 18),
     "hearts": frames.generate_frames(TEXTURES["hearts"], 10, 9),
     "shot": frames.generate_frames(TEXTURES["shot"],16,16 ),
-    "puzzle": frames.generate_frames(TEXTURES["puzzle"], TILE_SIZE, TILE_SIZE),
+    "Puzzle": generate_frames(TEXTURES["puzzle"], TILE_SIZE, TILE_SIZE),
     "dead": frames.generate_frames(TEXTURES["dead"], 32, 23),
 }
 
@@ -131,3 +136,9 @@ FONTS = {
     "small": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", 7),
     "medium": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", 16),
 }
+
+VIRTUAL_WIDTH_PUZZLE = 512
+VIRTUAL_HEIGHT_PUZZLE = 288
+
+BOARD_OFFSET_X = VIRTUAL_WIDTH_PUZZLE / 2 - (TILE_SIZE*2)/2
+BOARD_OFFSET_Y = VIRTUAL_HEIGHT_PUZZLE / 2 - (TILE_SIZE*2)/2

@@ -15,13 +15,17 @@ from src.GameLevel import GameLevel
 from src.Player import Player
 from src.Boss import Boss
 from src.states import game_states
+from src.Puzzle2.Board import Board
+from src.Puzzle2.Tile import Tile
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
-        self.level = enter_params.get("level", 2)
+        self.level = enter_params.get("level", 1)
         self.game_level = enter_params.get("game_level")
         self.lives = enter_params.get("lives",3)
-
+        self.activate_pause = False
+        self.board_activate = False
+        self.board = None
 
         if self.game_level is None:
             self.game_level = GameLevel(self.level)
@@ -116,6 +120,11 @@ class PlayState(BaseState):
 
         if self.player.open_door:
             Timer.after(1, self.next_level)
+            # self.board_activate = True
+            # self.state_machine.push(game_states.PauseState(self.state_machine))
+            # self.state_machine.push(Board(self.state_machine))
+            # return
+
 
         if (self.player.x > 1024) and (self.player.y > 320) and (self.band == True) and (self.level == 2):
             self.move_boss = True    
@@ -216,33 +225,13 @@ class PlayState(BaseState):
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "pause" and input_data.pressed:
-        
             if self.level == 1:
                 Timer.pause()
-                self.state_machine.change(
-                    "pause",
-                    level=self.level,
-                    camera=self.camera,
-                    game_level=self.game_level,
-                    player=self.player,   
-                    lives=self.lives,
-                )
+                self.state_machine.push(game_states.PauseState(self.state_machine))
             elif self.level == 2:
                 if self.boss_active == False:
                     Timer.pause()
-                    self.state_machine.change(
-                        "pause",
-                        level=self.level,
-                        camera=self.camera,
-                        game_level=self.game_level,
-                        player=self.player,   
-                        boss=self.boss,
-                        move_boss=self.move_boss,
-                        band=self.band,
-                        lives_boss=self.lives_boss,
-                        lives=self.lives,
-                    )
-
+                    self.state_machine.push(game_states.PauseState(self.state_machine))
         else:
             self.player.on_input(input_id, input_data)
 

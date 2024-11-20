@@ -5,9 +5,9 @@ from gale.input_handler import InputData
 from gale.timer import Timer
 import settings
 from src.Tile import Tile
+from gale.state import BaseState
 
-
-class Board(Game):
+class Board(BaseState):
     def init(self) -> None:
         self.board = [
             [None for _ in range(settings.BOARD_WIDTH)]
