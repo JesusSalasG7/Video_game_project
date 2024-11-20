@@ -15,8 +15,8 @@ from src.GameLevel import GameLevel
 from src.Player import Player
 from src.Boss import Boss
 from src.states import game_states
-from src.Puzzle2.Board import Board
-from src.Puzzle2.Tile import Tile
+from src.Puzzle.Board import Board
+from src.Puzzle.Tile import Tile
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
@@ -120,11 +120,6 @@ class PlayState(BaseState):
 
         if self.player.open_door:
             Timer.after(1, self.next_level)
-            # self.board_activate = True
-            # self.state_machine.push(game_states.PauseState(self.state_machine))
-            # self.state_machine.push(Board(self.state_machine))
-            # return
-
 
         if (self.player.x > 1024) and (self.player.y > 320) and (self.band == True) and (self.level == 2):
             self.move_boss = True    
@@ -151,12 +146,6 @@ class PlayState(BaseState):
                 self.move_boss = False
 
             self.boss.update(dt)
-
-            def to_win():
-                #self.boss.recovery
-                self.state_machine.pop()
-                self.state_machine.push(game_states.ScenaState(self.state_machine), "End")
-                self.state_machine.push(game_states.StartState(self.state_machine))
 
             if self.player.collides(self.boss):
                 

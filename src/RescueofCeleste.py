@@ -6,7 +6,7 @@ from gale.state import StateMachine
 
 from src.states import game_states
 from gale.state import StateStack
-
+from src.Puzzle.Board import Board
 class RescueofCeleste(Game):
     def init(self) -> None:
         self.state_machine = StateMachine(
@@ -22,7 +22,7 @@ class RescueofCeleste(Game):
         self.state_stack = StateStack()
         self.state_stack.push(game_states.ScenaState(self.state_stack), "Begin")
         self.state_stack.push(game_states.StartState(self.state_stack))
-
+    
     def update(self, dt: float) -> None:
         self.state_stack.update(dt)
 
