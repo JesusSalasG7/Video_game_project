@@ -50,7 +50,7 @@ class PlayState(BaseState):
 
         self.move_boss = enter_params.get("move_boss",False)
 
-        self.lives_boss = enter_params.get("lives_boss",1)
+        self.lives_boss = enter_params.get("lives_boss",7)
 
         self.band = enter_params.get("band",True)           
 
@@ -172,10 +172,7 @@ class PlayState(BaseState):
 
             if self.lives_boss == 0:
                     Timer.clear()
-                    self.boss = None
-                    pygame.time.wait(1500)
-                    self.state_machine.pop()
-                    self.state_machine.push(game_states.ScenaState(self.state_machine), "End")
+                    self.boss = None            
   
         if self.lives == 0: 
                 self.player.change_state("dead")       
