@@ -27,7 +27,7 @@ def door( player: Player):
     open_door(player)
 
 def puzzle( player: Player):
-    print("hola")   
+    pass   
 
 ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
     "coins": {
