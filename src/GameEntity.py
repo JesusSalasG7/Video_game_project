@@ -147,3 +147,87 @@ class GameEntity(mixins.DrawableMixin, mixins.AnimatedMixin, mixins.CollidableMi
         return self.tilemap.check_solidness_on(
             i + 1, left, GameObject.TOP
         ) or self.tilemap.check_solidness_on(i + 1, right, GameObject.TOP)
+
+    def items_collision_on_top(self) -> bool:
+        collision_rect = self.get_collision_rect()
+
+        # Row for the center of the player
+        i = self.tilemap.to_i(collision_rect.centery)
+
+        # Left and right columns
+        left = self.tilemap.to_j(collision_rect.left)
+        right = self.tilemap.to_j(collision_rect.right)
+
+
+        for item in self.items:
+            if item.texture_id == "block":
+                side = item.BOTTOM
+
+        if side:
+            print("hola")        
+
+        if self.tilemap.collides_tile_on(
+            i - 1, left, self, side
+        ) or self.tilemap.collides_tile_on(i - 1, right, self, side):
+            # Fix the entity position
+            
+            self.y = self.tilemap.to_y(i)
+            return True
+
+        return False
+
+    def items_collision_on_bottom(self) -> bool:
+        collision_rect = self.get_collision_rect()
+
+        # Row for the center of the player
+        i = self.tilemap.to_i(collision_rect.centery)
+
+        # Left and right columns
+        left = self.tilemap.to_j(collision_rect.left)
+        right = self.tilemap.to_j(collision_rect.right)
+
+        if self.tilemap.collides_tile_on(
+            i + 1, left, self, GameItem.TOP
+        ) or self.tilemap.collides_tile_on(i + 1, right, self,GameItem.TOP):
+            # Fix the entity position
+          
+            self.y = self.tilemap.to_y(i + 1) - self.height
+            return True
+
+        return False
+
+    def items_collision_on_right(self) -> bool:
+        collision_rect = self.get_collision_rect()
+
+        # Column for the center of the player
+        j = self.tilemap.to_j(collision_rect.centerx)
+        # Top and bottom Rows
+        top = self.tilemap.to_i(collision_rect.top)
+        center = self.tilemap.to_i(collision_rect.centery)
+
+        if self.tilemap.collides_tile_on(
+            top, j + 1, self, GameItem.LEFT
+        ) or self.tilemap.collides_tile_on(center, j + 1, self, GameItem.LEFT):
+            # Fix the entity position
+            self.x = self.tilemap.to_x(j + 1) - self.width
+            return True
+
+        return False
+
+    def items_collision_on_left(self) -> bool:
+        collision_rect = self.get_collision_rect()
+
+        # Column for the center of the player
+        j = self.tilemap.to_j(collision_rect.centerx)
+        # Top and bottom Rows
+        top = self.tilemap.to_i(collision_rect.top)
+        center = self.tilemap.to_i(collision_rect.centery)
+
+        if self.tilemap.collides_tile_on(
+            top, j - 1, self, GameItem.RIGHT
+        ) or self.tilemap.collides_tile_on(center, j - 1, self, GameItem.RIGHT):
+            # Fix the entity position
+            self.x = self.tilemap.to_x(j)
+            return True
+
+        return False
