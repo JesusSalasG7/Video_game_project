@@ -37,9 +37,6 @@ trampas para evitar que puddas superar la mazmorras.
 3.	Ítems:
 Algunos objetos en las mazmorras son necesarios para avanzar en el juego.
 
-4.	Acertijos:
-Resolver acertijos te otorgará recompensas especiales que facilitarán tu misión.
-
 # El objetivo
 •	Rescatar a la princesa Celeste:
 Para lograrlo, deberás atravesar todas las mazmorras y enfrentarte al Final Boss.
