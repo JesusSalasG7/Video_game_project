@@ -5,7 +5,7 @@ import pygame
 from gale import frames
 from gale import input_handler
 from typing import Dict
-
+from gale.frames import generate_frames
 from src import loaders
 
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_ESCAPE, "quit")
