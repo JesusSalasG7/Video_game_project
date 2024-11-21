@@ -129,6 +129,7 @@ SOUNDS = {
     "wounded": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "wounded.wav"),
     "count": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "count.wav"),
     "win_level": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "Win_level.ogg"),
+    "begin": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "music_begin.wav")
 }
 
 

@@ -17,6 +17,10 @@ class ScenaState(BaseState):
         if text == "Begin":
             self.dialogo = ["Caballero, nuestro reino esta envuelto en sombras.\nLa malvada criatura ha secuestrado a la\nprincesa, nuestra esperanza y guia.\nSolo tu puedes enfrentarte a esta oscuridad y devolver la paz.\nVe ahora, rescata a nuestra amada princesa\ny devuelve la esperanza a nuestro pueblo.","Majestad,\nno hay sombra que pueda detener el brillo del honor\nni criatura que desafie mi espada\nsin encontrar justicia.\nJuro por mi vida\ny mi lealtad al reino\nque la princesa sera rescatada,\ny este mal sera erradicado.\nQue el pueblo mantenga la fe,\npues regresare\ncon la esperanza\nque tanto anhelan."]
             self.charaters = ["Rey","Caballero"]
+            pygame.mixer.music.load(
+                settings.BASE_DIR / "assets" / "sounds" / "music_begin.wav"
+            )
+            pygame.mixer.music.play(loops=-1)
         else:
             self.dialogo = ["Gracias, amigo. Sabía que vendrías.\n Siempre supe que tenías la fuerza para llegar hasta aquí.\nLo que no sabes es que fui yo quien liberó al dragón.\n Él es el guardián de un poder antiguo, y yo necesitaba su fuerza. \nEl reino no está en peligro...\n El reino necesita este caos para renacer.\nTú, valiente caballero, \neres la pieza que faltaba para completar el ciclo. \nAhora que has derrotado al dragón, \nsolo yo puedo usar su poder para moldear el futuro del reino.\n Y tú... serás parte de ese futuro.\nSí, todas mienten. El rey, tú, incluso el dragón... \ntodos han jugado su parte en esta historia.\n Pero al final, sólo uno puede escribir el destino. \nY ese soy yo.","¿Amigo? Crei que... ¿No estás aquí en contra de tu voluntad?\n¿Qué... qué estás diciendo? ¿Era todo una trampa?\n¡No lo puedo creer! ¡Todo ha sido una mentira!\n ¿Nos han usado a todos?\n ¡El rey, el pueblo y yo"]
             self.charaters = ["Princesa","Caballero"]
@@ -88,6 +92,17 @@ class ScenaState(BaseState):
                     center=True,
                     shadowed=True,
                 )
+            
+            render_text(
+                    surface,
+                    "PRESIONA ENTER",
+                    settings.FONTS["small"],
+                    settings.VIRTUAL_WIDTH // 2,
+                    settings.VIRTUAL_HEIGHT // 2 + 70,
+                    (197, 195, 198),
+                    center=True,
+                    shadowed=True,
+                )
 
         pygame.draw.rect(
             self.screen_alpha_surface,
@@ -117,6 +132,11 @@ class ScenaState(BaseState):
                     self.index1 += 1
                     self.charaters_index = 0
                     self.active = False
+
+                    if self.text == "Begin":
+                        pygame.mixer.music.stop()
+                        pygame.mixer.music.unload()
+
                     Timer.tween(
                         1,
                         [(self, {"alpha_transition": 255})],
