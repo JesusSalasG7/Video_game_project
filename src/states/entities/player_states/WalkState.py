@@ -11,13 +11,8 @@ class WalkState(BaseEntityState):
         self.entity.vx = settings.PLAYER_SPEED
         if self.entity.flipped:
             self.entity.vx *= -1
-
-        if self.entity.wounded == True:
-            self.entity.texture_id = "Knight_Walk2"
-        else:     
-            self.entity.texture_id = "Knight_Walk"
-            
-        self.entity.change_animation("walk")   
+        self.entity.change_animation("walk")
+        self.entity.texture_id = "Knight_Walk"
 
     def update(self, dt: float) -> None:
         if not self.entity.check_floor():

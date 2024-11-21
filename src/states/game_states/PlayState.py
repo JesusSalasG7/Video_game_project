@@ -5,8 +5,11 @@ import pygame
 
 from gale.factory import AbstractFactory
 from gale.factory import AbstractFactory
+from gale.factory import AbstractFactory
 from gale.input_handler import InputData
 from gale.state import BaseState
+from gale.text import render_text
+from gale.timer import Timer
 from gale.text import render_text
 from gale.timer import Timer
 from gale.text import render_text
@@ -17,6 +20,9 @@ from src.Camera import Camera
 from src.GameLevel import GameLevel
 from src.Player import Player
 from src.Boss import Boss
+from src.states import game_states
+from src.Puzzle.Board import Board
+from src.Puzzle.Tile import Tilefrom src.Boss import Boss
 from src.states import game_states
 from src.Boss import Boss
 from src.states import game_states
@@ -39,30 +45,32 @@ class PlayState(BaseState):
         self.lives = enter_params.get("lives",3)
 
         if self.game_level is None:
-            self.game_level = GameLevel(self.level)
+        self.game_level = enter_params.get("game_level")
+        self.lives = enter_params.get("lives",3)
+        self.activate_pause = False
+        self.board_activate = False
+        self.board = None
+
+        if self.game_level is None:
+                self.game_level = GameLevel(self.level)
+            pygame.mixer.music.load(
+                settings.BASE_DIR / "assets" / "sounds" / "musicWorld.ogg"
+            )
+            pygame.mixer.music.play(loops=-1)
+
             pygame.mixer.music.load(
                 settings.BASE_DIR / "assets" / "sounds" / "musicWorld.ogg"
             )
             pygame.mixer.music.play(loops=-1)
 
         self.tilemap = self.game_level.tilemap
-
-        self.player = enter_params.get("player")
-        if self.player is None:
-            self.player = Player(0, 400 - 60, self.game_level)
-            self.player.change_state("idle")
-
         self.player = enter_params.get("player")
         if self.player is None:
             self.player = Player(0, 400 - 60, self.game_level)
             self.player.change_state("idle")
 
         self.camera = enter_params.get("camera")
-        if self.camera is None:
-            self.camera = Camera(0, 192, settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT)
-            self.camera.set_collision_boundaries(self.game_level.get_rect())
-            self.camera.attach_to(self.player)
-        self.camera = enter_params.get("camera")
+
         if self.camera is None:
             self.camera = Camera(0, 192, settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT)
             self.camera.set_collision_boundaries(self.game_level.get_rect())
@@ -81,8 +89,8 @@ class PlayState(BaseState):
         self.band = enter_params.get("band",True)        
 
         self.boss_active = False    
-
         Timer.resume()
+
 
     def update(self, dt: float) -> None:
 
@@ -101,8 +109,20 @@ class PlayState(BaseState):
             self.state_machine.pop()
             self.state_machine.push(game_states.GameOverState(self.state_machine), self.level)
     
+
+        if self.player.is_dead:
+            pygame.mixer.music.stop()
+            pygame.mixer.music.unload()
+            Timer.clear()
+            self.state_machine.pop()
+            self.state_machine.push(game_states.GameOverState(self.state_machine), self.level)
+    
         self.player.update(dt)
 
+        if self.player.y >= self.player.tilemap.height:
+            self.player.is_dead = True
+            return
+        
         if self.player.y >= self.player.tilemap.height:
             self.player.is_dead = True
             return
@@ -217,6 +237,7 @@ class PlayState(BaseState):
     def render(self, surface: pygame.Surface) -> None:
         
         
+        
         world_surface = pygame.Surface((self.tilemap.width, self.tilemap.height))
         self.game_level.render(world_surface)
         self.player.render(world_surface)
@@ -243,43 +264,25 @@ class PlayState(BaseState):
                 settings.TEXTURES["hearts"], (heart_x, 5), settings.FRAMES["hearts"][0]
             )
             heart_x += 11
-            i += 1  
+            i += 1
+
     
     def next_level(self) -> None:   
         pygame.mixer.music.stop()
         pygame.mixer.music.unload()
         Timer.clear()
         self.state_machine.pop()
-        self.state_machine.push(game_states.WinerLevelState(self.state_machine), level = self.level + 1)            
+        self.state_machine.push(game_states.WinerLevelState(self.state_machine), level = self.level + 1)             
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         if input_id == "pause" and input_data.pressed:
-        
             if self.level == 1:
                 Timer.pause()
-                self.state_machine.change(
-                    "pause",
-                    level=self.level,
-                    camera=self.camera,
-                    game_level=self.game_level,
-                    player=self.player,   
-                    lives=self.lives,
-                )
+                self.state_machine.push(game_states.PauseState(self.state_machine))
             elif self.level == 2:
-                if self.move_boss == False:
+                if self.boss_active == False:
                     Timer.pause()
-                    self.state_machine.change(
-                        "pause",
-                        level=self.level,
-                        camera=self.camera,
-                        game_level=self.game_level,
-                        player=self.player,   
-                        boss=self.boss,
-                        move_boss=self.move_boss,
-                        band=self.band,
-                        lives_boss=self.lives_boss,
-                        lives=self.lives,
-                    )
+                    self.state_machine.push(game_states.PauseState(self.state_machine))
         else:
             self.player.on_input(input_id, input_data)
 
