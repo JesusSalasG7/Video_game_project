@@ -4,8 +4,11 @@ from typing import Dict, Any
 import pygame
 
 from gale.factory import AbstractFactory
+from gale.factory import AbstractFactory
 from gale.input_handler import InputData
 from gale.state import BaseState
+from gale.text import render_text
+from gale.timer import Timer
 from gale.text import render_text
 from gale.timer import Timer
 
@@ -15,9 +18,22 @@ from src.GameLevel import GameLevel
 from src.Player import Player
 from src.Boss import Boss
 from src.states import game_states
+from src.Boss import Boss
+from src.states import game_states
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
+        self.level = enter_params.get("level", 2)
+        self.game_level = enter_params.get("game_level")
+        self.lives = enter_params.get("lives",3)
+
+        if self.game_level is None:
+            self.game_level = GameLevel(self.level)
+            pygame.mixer.music.load(
+                settings.BASE_DIR / "assets" / "sounds" / "musicWorld.ogg"
+            )
+            pygame.mixer.music.play(loops=-1)
+
         self.level = enter_params.get("level", 2)
         self.game_level = enter_params.get("game_level")
         self.lives = enter_params.get("lives",3)
@@ -36,6 +52,16 @@ class PlayState(BaseState):
             self.player = Player(0, 400 - 60, self.game_level)
             self.player.change_state("idle")
 
+        self.player = enter_params.get("player")
+        if self.player is None:
+            self.player = Player(0, 400 - 60, self.game_level)
+            self.player.change_state("idle")
+
+        self.camera = enter_params.get("camera")
+        if self.camera is None:
+            self.camera = Camera(0, 192, settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT)
+            self.camera.set_collision_boundaries(self.game_level.get_rect())
+            self.camera.attach_to(self.player)
         self.camera = enter_params.get("camera")
         if self.camera is None:
             self.camera = Camera(0, 192, settings.VIRTUAL_WIDTH, settings.VIRTUAL_HEIGHT)
@@ -67,7 +93,20 @@ class PlayState(BaseState):
             self.state_machine.pop()
             self.state_machine.push(game_states.GameOverState(self.state_machine), self.level)
     
+
+        if self.player.is_dead:
+            pygame.mixer.music.stop()
+            pygame.mixer.music.unload()
+            Timer.clear()
+            self.state_machine.pop()
+            self.state_machine.push(game_states.GameOverState(self.state_machine), self.level)
+    
         self.player.update(dt)
+
+        if self.player.y >= self.player.tilemap.height:
+            self.player.is_dead = True
+            return
+        
 
         if self.player.y >= self.player.tilemap.height:
             self.player.is_dead = True
@@ -176,6 +215,7 @@ class PlayState(BaseState):
 
             
     def render(self, surface: pygame.Surface) -> None:
+        
         
         world_surface = pygame.Surface((self.tilemap.width, self.tilemap.height))
         self.game_level.render(world_surface)
