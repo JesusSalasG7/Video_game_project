@@ -13,6 +13,6 @@ class CollidableMixin:
 
     def collides(self, another: Any) -> bool:
         return self.get_collision_rect().colliderect(another.get_collision_rect())
-
-
-
+    
+    def collides2(self, another: Any) -> bool:
+        return self.get_collision_rect().colliderect(another)

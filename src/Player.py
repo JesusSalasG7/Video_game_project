@@ -44,9 +44,17 @@ class Player(GameEntity):
 
         self.animations["dead"].on_finish = set_dead
 
-
     def recovery(self) -> None:
         self.wounded = False
+
+    def change_texture(self, texture_id: str) -> None:
+        self.texture_id = texture_id
+
+    def attack_zone(self,flipped)  -> None:
+        if flipped:
+            return pygame.Rect(self.x - 9, self.y, self.width, self.height)
+        else: 
+            return pygame.Rect(self.x, self.y, self.width + 9, self.height)
 
     def on_input(self, input_id: str, input_data: InputData) -> None:
         self.state_machine.on_input(input_id, input_data)

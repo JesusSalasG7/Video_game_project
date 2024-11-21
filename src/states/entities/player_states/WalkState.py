@@ -5,14 +5,20 @@ import settings
 from src.states.entities.BaseEntityState import BaseEntityState
 
 
+
 class WalkState(BaseEntityState):
     def enter(self, direction: str) -> None:
         self.entity.flipped = direction == "left"
         self.entity.vx = settings.PLAYER_SPEED
         if self.entity.flipped:
             self.entity.vx *= -1
-        self.entity.change_animation("walk")
-        self.entity.texture_id = "Knight_Walk"
+
+        if self.entity.wounded == True:
+            self.entity.texture_id = "Knight_Walk2"
+        else:     
+            self.entity.texture_id = "Knight_Walk"
+            
+        self.entity.change_animation("walk")   
 
     def update(self, dt: float) -> None:
         if not self.entity.check_floor():

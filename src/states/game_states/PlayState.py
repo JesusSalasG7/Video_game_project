@@ -18,7 +18,7 @@ from src.Puzzle.Board import Board
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
-        self.level = enter_params.get("level", 1)
+        self.level = enter_params.get("level", 2)
         self.game_level = enter_params.get("game_level")
         self.lives = enter_params.get("lives",3)
 
@@ -175,7 +175,8 @@ class PlayState(BaseState):
                     self.boss = None            
   
         if self.lives == 0: 
-                self.player.change_state("dead")     
+                self.player.change_state("dead")       
+ 
 
             
     def render(self, surface: pygame.Surface) -> None:
@@ -220,7 +221,7 @@ class PlayState(BaseState):
                 Timer.pause()
                 self.state_machine.push(game_states.PauseState(self.state_machine))
             elif self.level == 2:
-                if self.boss_active == False:
+                if self.move_boss == False:
                     Timer.pause()
                     self.state_machine.push(game_states.PauseState(self.state_machine))
         else:
