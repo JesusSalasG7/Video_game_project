@@ -68,18 +68,22 @@ Ingresar al directorio
 
 Abre una terminal y navega a la carpeta del juego con el siguiente comando:
 cd rescue_of_celeste
+
 Crear un entorno virtual de Python
 
 Crea un entorno virtual para gestionar las dependencias del juego:
 python3 -m venv .venv
+
 Activar el entorno virtual
 
 Activa el entorno virtual con el siguiente comando:
 source .venv/bin/activate
+
 Instalar las dependencias
 
 Una vez activado el entorno, instala los paquetes necesarios con:
 pip install -r requirements.txt
+
 Instalar la biblioteca Pillow
 
 Es necesario instalar Pillow, una biblioteca de Python para manejar imágenes:
