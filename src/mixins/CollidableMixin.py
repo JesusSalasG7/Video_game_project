@@ -1,7 +1,10 @@
 
+from typing import Any, Tuple, Tuple
 from typing import Any, Tuple
 
 import pygame
+
+
 
 
 class CollidableMixin:
@@ -10,4 +13,6 @@ class CollidableMixin:
 
     def collides(self, another: Any) -> bool:
         return self.get_collision_rect().colliderect(another.get_collision_rect())
+
+
 

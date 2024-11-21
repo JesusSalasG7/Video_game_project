@@ -4,8 +4,14 @@ from typing import Dict, Any
 import pygame
 
 from gale.factory import AbstractFactory
+from gale.factory import AbstractFactory
+from gale.factory import AbstractFactory
 from gale.input_handler import InputData
 from gale.state import BaseState
+from gale.text import render_text
+from gale.timer import Timer
+from gale.text import render_text
+from gale.timer import Timer
 from gale.text import render_text
 from gale.timer import Timer
 
@@ -16,11 +22,29 @@ from src.Player import Player
 from src.Boss import Boss
 from src.states import game_states
 from src.Puzzle.Board import Board
-from src.Puzzle.Tile import Tile
+from src.Puzzle.Tile import Tilefrom src.Boss import Boss
+from src.states import game_states
+from src.Boss import Boss
+from src.states import game_states
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
-        self.level = enter_params.get("level", 1)
+        self.level = enter_params.get("level", 2)
+        self.game_level = enter_params.get("game_level")
+        self.lives = enter_params.get("lives",3)
+
+        if self.game_level is None:
+            self.game_level = GameLevel(self.level)
+            pygame.mixer.music.load(
+                settings.BASE_DIR / "assets" / "sounds" / "musicWorld.ogg"
+            )
+            pygame.mixer.music.play(loops=-1)
+
+        self.level = enter_params.get("level", 2)
+        self.game_level = enter_params.get("game_level")
+        self.lives = enter_params.get("lives",3)
+
+        if self.game_level is None:
         self.game_level = enter_params.get("game_level")
         self.lives = enter_params.get("lives",3)
         self.activate_pause = False
@@ -28,7 +52,12 @@ class PlayState(BaseState):
         self.board = None
 
         if self.game_level is None:
-            self.game_level = GameLevel(self.level)
+                self.game_level = GameLevel(self.level)
+            pygame.mixer.music.load(
+                settings.BASE_DIR / "assets" / "sounds" / "musicWorld.ogg"
+            )
+            pygame.mixer.music.play(loops=-1)
+
             pygame.mixer.music.load(
                 settings.BASE_DIR / "assets" / "sounds" / "musicWorld.ogg"
             )
@@ -72,7 +101,32 @@ class PlayState(BaseState):
             self.state_machine.pop()
             self.state_machine.push(game_states.GameOverState(self.state_machine), self.level)
     
+
+        if self.player.is_dead:
+            pygame.mixer.music.stop()
+            pygame.mixer.music.unload()
+            Timer.clear()
+            self.state_machine.pop()
+            self.state_machine.push(game_states.GameOverState(self.state_machine), self.level)
+    
+
+        if self.player.is_dead:
+            pygame.mixer.music.stop()
+            pygame.mixer.music.unload()
+            Timer.clear()
+            self.state_machine.pop()
+            self.state_machine.push(game_states.GameOverState(self.state_machine), self.level)
+    
         self.player.update(dt)
+
+        if self.player.y >= self.player.tilemap.height:
+            self.player.is_dead = True
+            return
+        
+        if self.player.y >= self.player.tilemap.height:
+            self.player.is_dead = True
+            return
+        
 
         if self.player.y >= self.player.tilemap.height:
             self.player.is_dead = True
@@ -83,16 +137,17 @@ class PlayState(BaseState):
         self.game_level.update(dt)
 
         for creature in self.game_level.creatures:
+            
             if self.player.collides(creature):
-                if self.player.texture_id == "Knight_Attack":
+                if self.player.texture_id == "Knight_Attack" or self.player.texture_id == "Knight_Attack2" :
                     self.game_level.creatures.remove(creature)
                     settings.SOUNDS["dead"].play()
-
                 elif not self.player.wounded:
                     settings.SOUNDS["wounded"].play()
                     self.lives-=1    
                     self.player.wounded = True
                     Timer.after(3,self.player.recovery)
+        
         if self.lives == 0: 
             self.player.change_state("dead")            
 
@@ -104,7 +159,6 @@ class PlayState(BaseState):
                 item.on_consume(self.player) 
                 if self.player.pickup_key: 
                     item.on_collide(self.player)
-                 
 
         for trap in self.game_level.traps:
             if self.player.collides(trap):
@@ -155,12 +209,8 @@ class PlayState(BaseState):
                             settings.SOUNDS["dead"].play()
                             self.lives_boss -= 1    
                             self.boss.wounded = True
-                            pygame.time.wait(5000)
-                            self.level = 1
-                            self.state_machine.pop()
-                            self.state_machine.push(game_states.StartState(self.state_machine))
-                            self.state_machine.push(game_states.ScenaState(self.state_machine), "End")
-                            
+                            Timer.after(1,self.boss.recovery)
+
                     if self.boss.vx !=0:
                         if not self.player.wounded:
                             settings.SOUNDS["wounded"].play()
@@ -182,8 +232,11 @@ class PlayState(BaseState):
   
         if self.lives == 0: 
                 self.player.change_state("dead")       
+
             
     def render(self, surface: pygame.Surface) -> None:
+        
+        
         
         world_surface = pygame.Surface((self.tilemap.width, self.tilemap.height))
         self.game_level.render(world_surface)
@@ -191,7 +244,16 @@ class PlayState(BaseState):
 
         if self.level == 2 and self.boss != None:
             self.boss.render(world_surface)      
-        
+
+            i = 0
+            live_boss_x = 1120
+            while i < self.lives_boss:
+                world_surface.blit(
+                    settings.TEXTURES["live_boss"], (live_boss_x, 224), settings.FRAMES["live_boss"][5]
+                )
+                live_boss_x += 16
+                i += 1  
+
         surface.blit(world_surface, (-self.camera.x, -self.camera.y))
 
         heart_x = settings.VIRTUAL_WIDTH - 40

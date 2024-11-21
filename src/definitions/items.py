@@ -26,9 +26,19 @@ def key( player: Player):
 def door( player: Player):
     open_door(player)
 
+def puzzle( player: Player):
+    print("hola")   
+
 ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
     "coins": {
 
+        29: {
+            "texture_id": "tiles",
+            "solidness": dict(top=False, right=False, bottom=False, left=False),
+            "consumable": True,
+            "collidable": True,
+            "on_consume": puzzle,
+        },
         74: {
             "texture_id": "tiles2",
             "solidness": dict(top=False, right=False, bottom=False, left=False),
@@ -36,7 +46,7 @@ ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
             "collidable": True,
             "on_collide": door,
         },
-         82: {
+        82: {
             "texture_id": "tiles2",
             "solidness": dict(top=False, right=False, bottom=False, left=False),
             "consumable": True,
@@ -50,6 +60,5 @@ ITEMS: Dict[str, Dict[int, Dict[str, Any]]] = {
             "collidable": True,
             "on_consume": key,
         },
-
     },
 }
