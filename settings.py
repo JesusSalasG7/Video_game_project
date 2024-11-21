@@ -84,7 +84,7 @@ TILEMAP: Dict[str, Dict[int, str] ]= {
     }
 }
 
-BASE_DIR = pathlib.pathlib.Path(__file__).parent
+BASE_DIR = pathlib.Path(__file__).parent
 
 LevelLoader = loaders.TmxLevelLoader
 

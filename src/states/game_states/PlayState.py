@@ -3,15 +3,8 @@ from typing import Dict, Any
 
 import pygame
 
-from gale.factory import AbstractFactory
-from gale.factory import AbstractFactory
-from gale.factory import AbstractFactory
 from gale.input_handler import InputData
 from gale.state import BaseState
-from gale.text import render_text
-from gale.timer import Timer
-from gale.text import render_text
-from gale.timer import Timer
 from gale.text import render_text
 from gale.timer import Timer
 
@@ -22,14 +15,10 @@ from src.Player import Player
 from src.Boss import Boss
 from src.states import game_states
 from src.Puzzle.Board import Board
-from src.Puzzle.Tile import Tilefrom src.Boss import Boss
-from src.states import game_states
-from src.Boss import Boss
-from src.states import game_states
 
 class PlayState(BaseState):
     def enter(self, **enter_params: Dict[str, Any]) -> None:
-        self.level = enter_params.get("level", 2)
+        self.level = enter_params.get("level", 1)
         self.game_level = enter_params.get("game_level")
         self.lives = enter_params.get("lives",3)
 
@@ -45,14 +34,14 @@ class PlayState(BaseState):
         self.lives = enter_params.get("lives",3)
 
         if self.game_level is None:
-        self.game_level = enter_params.get("game_level")
+            self.game_level = enter_params.get("game_level")
         self.lives = enter_params.get("lives",3)
         self.activate_pause = False
         self.board_activate = False
         self.board = None
 
         if self.game_level is None:
-                self.game_level = GameLevel(self.level)
+            self.game_level = GameLevel(self.level)
             pygame.mixer.music.load(
                 settings.BASE_DIR / "assets" / "sounds" / "musicWorld.ogg"
             )
