@@ -5,6 +5,7 @@ import settings
 from src.Puzzle.Tile import Tile
 from gale.state import BaseState
 from gale.timer import Timer
+from src.Player import Player
 
 class Board(BaseState):
     def enter(self) -> None:
@@ -52,7 +53,7 @@ class Board(BaseState):
                 
         if check == 4:
             return True
-
+    
     def render(self, surface: pygame.Surface) -> None:
        
         pygame.draw.rect(
@@ -67,16 +68,15 @@ class Board(BaseState):
             for block in row:
                 block.render(surface, False)
 
+    def __pop(self):
+        self.state_machine.pop()
+    
     def on_input(self, input_id: str, input_data: InputData) -> None:
 
-        if self.__check_to_win():            
-            pygame.time.wait(1500)
-            self.state_machine.pop()
+        if self.__check_to_win():
+            Timer.after(5, lambda: self.__pop())
             
         else:
-
-            if input_id == "quit" and input_data.pressed and self.active:
-                self.quit()
 
             if input_id == "click" and input_data.pressed and self.active:
                 pos_x, pos_y = input_data.position
