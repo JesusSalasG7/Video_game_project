@@ -50,7 +50,7 @@ class PlayState(BaseState):
 
         self.move_boss = enter_params.get("move_boss",False)
 
-        self.lives_boss = enter_params.get("lives_boss",3)
+        self.lives_boss = enter_params.get("lives_boss",7)
 
         self.band = enter_params.get("band",True)           
 
@@ -180,7 +180,7 @@ class PlayState(BaseState):
     
     def __pop(self)-> None:
         self.state_machine.pop()
-        self.state_machine.push(game_states.StartState(self.state_machine))
+        self.state_machine.push(game_states.GameOverState(self.state_machine),self.level)
         self.state_machine.push(game_states.ScenaState(self.state_machine),"End")
             
     def render(self, surface: pygame.Surface) -> None:
