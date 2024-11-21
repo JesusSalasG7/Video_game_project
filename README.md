@@ -78,6 +78,7 @@ Activar el entorno virtual
 
 Activa el entorno virtual con el siguiente comando:
 source .venv/bin/activate
+
 Instalar las dependencias
 
 Una vez activado el entorno, instala los paquetes necesarios con:
