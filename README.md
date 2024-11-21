@@ -31,7 +31,7 @@ caes en los abismos de la mazmorras
 1.	Enemigos:
 Criaturas hostiles que intentarán detener tu progreso.
 
-2.trampas:
+2.  trampas:
 trampas para evitar que puddas superar la mazmorras.
 
 3.	Ítems:
