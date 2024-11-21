@@ -1,10 +1,20 @@
+"""
+ISPPJ1 2024
+Study Case: Super Martian (Platformer)
 
-from typing import TypeVar, Dict, Any, Tuple
+Author: Alejandro Mujica
+alejandro.j.mujic4@gmail.com
+
+This file contains the base class GameEntity.
+"""
+
+from typing import TypeVar, Dict, Any, Tuple, List
 
 from gale.state import StateMachine, BaseState
 
 from src import mixins
 from src.GameObject import GameObject
+from src.GameItem import GameItem
 
 class GameEntity(mixins.DrawableMixin, mixins.AnimatedMixin, mixins.CollidableMixin):
     def __init__(
@@ -28,15 +38,15 @@ class GameEntity(mixins.DrawableMixin, mixins.AnimatedMixin, mixins.CollidableMi
         self.frame_index = -1
         self.game_level = game_level
         self.tilemap = self.game_level.tilemap
+        self.items = self.game_level.items
         self.state_machine = StateMachine(states)
         self.current_animation = None
         self.animations = {}
         self.generate_animations(animation_defs)
         self.flipped = False
+        self.is_dead = False
 
-    def change_state(
-        self, state_id: str, *args: Tuple[Any], **kwargs: Dict[str, Any]
-    ) -> None:
+    def change_state(self, state_id: str, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> None:
         self.state_machine.change(state_id, *args, **kwargs)
 
     def update(self, dt: float) -> None:
@@ -68,7 +78,7 @@ class GameEntity(mixins.DrawableMixin, mixins.AnimatedMixin, mixins.CollidableMi
             self.y = self.tilemap.to_y(i)
             return True
 
-        return False    
+        return False
 
     def handle_tilemap_collision_on_bottom(self) -> bool:
         collision_rect = self.get_collision_rect()
@@ -88,7 +98,7 @@ class GameEntity(mixins.DrawableMixin, mixins.AnimatedMixin, mixins.CollidableMi
             return True
 
         return False
-    
+
     def handle_tilemap_collision_on_right(self) -> bool:
         collision_rect = self.get_collision_rect()
 
@@ -124,11 +134,9 @@ class GameEntity(mixins.DrawableMixin, mixins.AnimatedMixin, mixins.CollidableMi
             return True
 
         return False
-    
+
     def check_floor(self) -> bool:
-        """
-        Check whether the entity is on a solid tile.
-        """
+     
         collision_rect = self.get_collision_rect()
 
         # Row for the center of the player

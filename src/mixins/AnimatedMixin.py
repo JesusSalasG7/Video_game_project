@@ -3,7 +3,6 @@ from typing import Dict, Any
 
 from gale.animation import Animation
 
-
 class AnimatedMixin:
     def generate_animations(self, animation_defs: Dict[str, Dict[str, Any]]) -> None:
         for animation_id, values in animation_defs.items():

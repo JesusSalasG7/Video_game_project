@@ -3,7 +3,6 @@ import pygame
 
 import settings
 
-
 class DrawableMixin:
     def render(self, surface: pygame.Surface) -> None:
         texture = settings.TEXTURES[self.texture_id]
