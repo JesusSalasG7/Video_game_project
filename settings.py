@@ -5,19 +5,10 @@ import pygame
 from gale import frames
 from gale import input_handler
 from typing import Dict
-from typing import Dict
 
 from src import loaders
 
-from gale.frames import generate_frames
-
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_ESCAPE, "quit")
-input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "click")
-
-input_handler.InputHandler.set_keyboard_action(input_handler.KEY_ESCAPE, "quit")
-input_handler.InputHandler.set_keyboard_action(input_handler.KEY_p, "pause")
-input_handler.InputHandler.set_keyboard_action(input_handler.KEY_RETURN, "enter")
-input_handler.InputHandler.set_keyboard_action(input_handler.KEY_KP_ENTER, "enter")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_p, "pause")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_RETURN, "enter")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_KP_ENTER, "enter")
@@ -26,13 +17,6 @@ input_handler.InputHandler.set_keyboard_action(input_handler.KEY_d, "move_right"
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_LEFT, "move_left")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_a, "move_left")
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_SPACE, "jump")
-input_handler.InputHandler.set_keyboard_action(input_handler.KEY_x, "attack")
-input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "click")
-
-BOARD_WIDTH = 2
-BOARD_HEIGHT = 2
-
-TILE_SIZE = 75
 input_handler.InputHandler.set_keyboard_action(input_handler.KEY_x, "attack")
 input_handler.InputHandler.set_mouse_click_action(input_handler.MOUSE_BUTTON_1, "click")
 
@@ -58,9 +42,6 @@ PLAYER_SPEED = 80
 BOSS_SPEED = 60
 
 GRAVITY = 900
-BOSS_SPEED = 60
-
-GRAVITY = 900
 
 NUM_LEVELS = 2
 
@@ -71,16 +52,16 @@ TILEMAP: Dict[str, Dict[int, str] ]= {
         #TEXTURAS
         (1,176):"tiles",
         (177,248):"creatures",
-        (249,350):"tiles2",
+        (249,376):"tiles2",
+        (376,379):"creatures2",
     },
     "level2": {
-        
         #TEXTURAS
         (1,60):"tiles3",
         (61,72): "creatures3",
         (73,144): "creatures",
         (145,320) :"tiles",
-        (321,500) :"dead_Walk",
+        (321,333): "creatures2",
     }
 }
 
@@ -93,22 +74,7 @@ TEXTURES = {
     "puzzle": pygame.image.load(BASE_DIR / "assets" / "textures" / "imagen.jpg"),
     "tiles2": pygame.image.load(BASE_DIR / "assets" / "textures" / "tileset2.png"),
     "tiles3": pygame.image.load(BASE_DIR / "assets" / "textures" / "tileset3.png"),
-    "puzzle": pygame.image.load(BASE_DIR / "assets" / "textures" / "imagen.jpg"),
-    "tiles2": pygame.image.load(BASE_DIR / "assets" / "textures" / "tileset2.png"),
-    "tiles3": pygame.image.load(BASE_DIR / "assets" / "textures" / "tileset3.png"),
     "Knight_Walk": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Walk.png"),
-    "Knight_Attack": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Attack.png"),
-    "dead_Walk": pygame.image.load(BASE_DIR / "assets" / "textures" / "dead_Walk.png"),
-    "dead_Attack": pygame.image.load(BASE_DIR / "assets" / "textures" / "dead_Attack.png"),
-    "creatures": pygame.image.load(BASE_DIR / "assets" / "textures" / "creatures.png"),
-    "creatures3": pygame.image.load(BASE_DIR / "assets" / "textures" / "creatures3.png"),
-    "hearts": pygame.image.load(BASE_DIR / "assets" / "textures" / "hearts.png"),
-    "shot": pygame.image.load(BASE_DIR / "assets" / "textures" / "shot.png"),
-    "Begin": pygame.image.load(BASE_DIR / "assets" / "textures" / "Begin.png"),
-    "End": pygame.image.load(BASE_DIR / "assets" / "textures" / "End.png"),
-    "background": pygame.image.load(BASE_DIR / "assets" / "textures" / "background.png"),
-    "dead": pygame.image.load(BASE_DIR / "assets" / "textures" / "dead.png"),
-    "Puzzle": pygame.image.load(BASE_DIR / "assets" / "textures" / "Puzzle.jpg"),
     "Knight_Walk2": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Walk2.png"),
     "Knight_Attack": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Attack.png"),
     "Knight_Attack2": pygame.image.load(BASE_DIR / "assets" / "textures" / "Knight_Attack2.png"),
@@ -150,36 +116,6 @@ TILEMAPS = {
     i: BASE_DIR / "assets" / "tilemaps" / f"level{i}" for i in range(1, NUM_LEVELS + 1)
 }
 
-pygame.mixer.init()
-
-SOUNDS = {
-    "pickup_coin": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "pickup_coin.wav"),
-    "jump": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "SFX_Jump_33.mp3"),
-    "attack": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "attack.mp3"),
-    "dead": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "dead.wav"),
-    "gameover": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "gameover.mp3"),
-    "wounded": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "wounded.wav"),
-    "count": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "count.wav"),
-    "win_level": pygame.mixer.Sound(BASE_DIR / "assets" / "sounds" / "Win_level.ogg"),
-}
-
-
-SOUNDS["pickup_coin"].set_volume(0.5)
-
-
-pygame.font.init()
-
-FONTS = {
-    "small": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", 7),
-    "medium": pygame.font.Font(BASE_DIR / "assets" / "fonts" / "font.ttf", 16),
-}
-
-#Dimensiones del puzzle
-VIRTUAL_WIDTH_PUZZLE = VIRTUAL_WIDTH
-VIRTUAL_HEIGHT_PUZZLE = VIRTUAL_HEIGHT
-
-BOARD_OFFSET_X = VIRTUAL_WIDTH_PUZZLE / 2 - (TILE_SIZE*2)/2 
-BOARD_OFFSET_Y = VIRTUAL_HEIGHT_PUZZLE / 2 - (TILE_SIZE*2)/2
 pygame.mixer.init()
 
 SOUNDS = {
