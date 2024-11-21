@@ -90,6 +90,7 @@ TEXTURES = {
     "background": pygame.image.load(BASE_DIR / "assets" / "textures" / "background.png"),
     "dead": pygame.image.load(BASE_DIR / "assets" / "textures" / "dead.png"),
     "live_boss": pygame.image.load(BASE_DIR / "assets" / "textures" / "live_boss.png"),
+    "Puzzle": pygame.image.load( BASE_DIR / "assets" / "textures" / "Puzzle.jpg")
 }
 
 FRAMES = {
@@ -110,6 +111,7 @@ FRAMES = {
     "puzzle": frames.generate_frames(TEXTURES["puzzle"], TILE_SIZE, TILE_SIZE),
     "dead": frames.generate_frames(TEXTURES["dead"], 32, 23),
     "live_boss": frames.generate_frames(TEXTURES["live_boss"], 24, 9),
+    "Puzzle": generate_frames(TEXTURES["Puzzle"], TILE_SIZE, TILE_SIZE)
 }
 
 TILEMAPS = {
