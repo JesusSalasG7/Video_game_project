@@ -140,6 +140,7 @@ FRAMES = {
     "shot": frames.generate_frames(TEXTURES["shot"],16,16 ),
     "Puzzle": generate_frames(TEXTURES["puzzle"], TILE_SIZE, TILE_SIZE),
     "dead": frames.generate_frames(TEXTURES["dead"], 32, 23),
+    "live_boss": frames.generate_frames(TEXTURES["live_boss"], 24, 9),
 }
 
 TILEMAPS = {
