@@ -87,8 +87,8 @@ Instalar la biblioteca Pillow
 
 Es necesario instalar Pillow, una biblioteca de Python para manejar imágenes:
 pip install pillow
-Ejecutar el juego
 
+Ejecutar el juego
 Finalmente, ejecuta el juego con el siguiente comando:
 python main.py
 
