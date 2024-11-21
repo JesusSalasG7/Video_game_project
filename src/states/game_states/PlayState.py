@@ -50,7 +50,7 @@ class PlayState(BaseState):
 
         self.move_boss = enter_params.get("move_boss",False)
 
-        self.lives_boss = enter_params.get("lives_boss",1)
+        self.lives_boss = enter_params.get("lives_boss",3)
 
         self.band = enter_params.get("band",True)           
 
